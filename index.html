@@ -382,6 +382,9 @@ tbody tr{animation:rowIn .3s ease both}
 #mx thead th:first-child{position:sticky;left:0;z-index:60;min-width:240px;background:var(--th-bg)!important}
 #mx tbody td:first-child{position:sticky;left:0;z-index:30;background:var(--surf);border-right:1px solid var(--bd)}
 #mx tbody tr:hover td:first-child{background:var(--surf2)!important}
+/* When floater is active, hide native thead to avoid duplication */
+#mx.fl-on thead th{visibility:hidden}
+#mx.fl-on thead{height:var(--mx-thead-h,50px)}
 
 /* Floating sticky header clone for matrix - shown when card top scrolls past topbar */
 .card-mx{overflow:visible !important}
@@ -558,6 +561,13 @@ input[type=checkbox]{accent-color:var(--brand);cursor:pointer;width:16px;height:
 .empty-st{padding:60px 20px;text-align:center;color:var(--ink5)}
 .empty-st .material-symbols-rounded{font-size:48px;color:var(--ink6);margin-bottom:12px}
 .empty-st p{font-size:14px;font-weight:500}
+
+/* Hide browser-native password reveal/clear icons (Edge, IE, Webkit) */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear{display:none!important;width:0!important;height:0!important}
+input[type="password"]::-webkit-credentials-auto-fill-button{display:none!important;visibility:hidden!important;pointer-events:none!important;height:0!important;width:0!important;margin:0!important}
+input[type="password"]::-webkit-strong-password-auto-fill-button{display:none!important}
+input[type="password"]::-webkit-contacts-auto-fill-button{display:none!important;visibility:hidden!important;pointer-events:none!important;height:0!important;width:0!important;margin:0!important}
 
 /* iOS / Android safe-area-insets */
 @supports (padding:env(safe-area-inset-top)){
@@ -764,7 +774,7 @@ input[type=checkbox]{accent-color:var(--brand);cursor:pointer;width:16px;height:
     </form>
     <div class="login-foot">
       <span class="material-symbols-rounded">verified_user</span>
-      <span>Connessione sicura · v44.0</span>
+      <span>Connessione sicura · v44.1</span>
     </div>
   </div>
 </div>
@@ -1600,10 +1610,14 @@ function setupMxSticky(){
       fl.style.left=mxRect.left+'px';
       fl.style.width=mxRect.width+'px';
       fl.style.height=theadH+'px';
+      // Set thead height as CSS var so empty space is preserved when sticky thead hides
+      mx.style.setProperty('--mx-thead-h',theadH+'px');
+      mx.classList.add('fl-on');
       // Sync horizontal scroll with the matrix
       shift.style.transform=`translateX(${-mx.scrollLeft}px)`;
     }else{
       fl.style.display='none';
+      mx.classList.remove('fl-on');
     }
   }
   
