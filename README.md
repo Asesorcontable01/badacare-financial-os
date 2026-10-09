@@ -35,11 +35,8 @@ Il vantaggio rispetto al deployment "puro Apps Script" è che gli utenti non ved
 
 1. Fork o crea un repo nuovo su GitHub (es. `badacare-financial-os`).
 2. Carica `Index.html` (e questo `README.md`) nel repo.
-3. Apri `Index.html` ed edita la riga:
-   ```js
-   const API_URL = "PASTE_YOUR_APPS_SCRIPT_DEPLOYMENT_URL_HERE";
-   ```
-   Incolla l'URL `/exec` copiato al punto 1.7.
+3. Apri `index.html` ed edita la riga `const API_URL = "...";`
+   incollando l'URL `/exec` copiato al punto 1.7.
 4. Commit + push.
 5. Su GitHub → repo → **Settings → Pages**:
    - Source: `Deploy from a branch`
@@ -51,19 +48,15 @@ Il vantaggio rispetto al deployment "puro Apps Script" è che gli utenti non ved
 ### 3. Login
 
 - Utente: `BADACARE`
-- Password: `Badacare2026!`
+- Password: la stessa di `SHARED_SECRET` in `cashflow.gs` (non è scritta nel frontend).
 
-Il login è solo client-side (deterrente). La protezione vera è il `SHARED_SECRET` nel backend Apps Script che blocca le chiamate API senza il token corretto.
+Dalla v45 la password non è più nel codice pubblico: al login viene inviata al backend, che la confronta con `SHARED_SECRET`. Se è corretta la sessione resta aperta finché non si chiude la scheda (sessionStorage).
 
-## Come ruotare le credenziali
+## Come cambiare la password
 
-Se vuoi cambiare la password:
-
-1. In `cashflow.gs` cambia `SHARED_SECRET = "..."` con la nuova password.
-2. In `Index.html` cambia `API_SECRET = "..."` con la stessa password.
-3. In `Index.html` cambia `VALID_PASS = "..."` con la stessa password (o una diversa, se vuoi che il login UI sia diverso dalla chiave API — funziona lo stesso).
-4. Redeploy del web app Apps Script (sempre **New deployment** o **Manage deployments → New version**).
-5. Commit + push del frontend su GitHub.
+1. In Apps Script cambia `const SHARED_SECRET = "...";` con la nuova password.
+2. **Deploy → Manage deployments → Edit → New version → Deploy** (l'URL `/exec` resta lo stesso).
+3. Fatto: non serve toccare `index.html`. Chi è collegato con la vecchia password viene riportato al login.
 
 ## Aggiornamenti futuri
 
@@ -74,7 +67,7 @@ Se vuoi cambiare la password:
 
 | File | Dove vive | Cosa fa |
 |---|---|---|
-| `Index.html` | GitHub Pages | UI completa (login, dashboard, matrice, modali) |
+| `index.html` | GitHub Pages | UI completa (login, dashboard, matrice, modali, export Excel .xlsx) |
 | `cashflow.gs` | Apps Script | API JSON che legge/scrive il Google Sheet |
 | `README.md` | GitHub | Questo file |
 
@@ -87,8 +80,8 @@ Se vuoi cambiare la password:
 
 ## Sicurezza — note importanti
 
-- ⚠️ Le credenziali di login (`BADACARE` / `Badacare2026!`) sono visibili nel sorgente HTML. Non sono protezione contro un attaccante motivato. Sono un *deterrente*.
-- ⚠️ Il `SHARED_SECRET` è anch'esso visibile nel sorgente JS pubblico. Chi lo legge può chiamare l'API direttamente. Protegge contro bot casuali, non contro chi guarda il codice.
+- ✅ La password (`SHARED_SECRET`) vive solo in Apps Script: il frontend pubblico non la contiene.
+- ⚠️ Le versioni precedenti alla v45 avevano la password scritta nel codice e in questo README: se non l'hai già fatto, cambiala (vedi sopra).
 - ✅ Il Google Sheet rimane comunque protetto dai permessi Google: solo l'account che ha fatto il deploy può effettivamente leggere/scrivere (perché il deploy è "Execute as: Me").
 - 🔒 Per sicurezza vera serve OAuth o autenticazione server-side. Se il dato sensibile diventa critico, si può migrare a Cloud Run o un vero backend.
 
@@ -97,8 +90,8 @@ Se vuoi cambiare la password:
 **La schermata resta su "Sincronizzazione dati..."**
 → Probabilmente `API_URL` non è configurato o il deployment Apps Script non è "Anyone access". Apri la console del browser (F12) per vedere l'errore.
 
-**Errore "Unauthorized"**
-→ `API_SECRET` in `Index.html` non coincide con `SHARED_SECRET` in `cashflow.gs`. Devono essere identici.
+**"Utente o password non corretti" con la password giusta**
+→ Controlla `SHARED_SECRET` in Apps Script e che il deploy sia stato aggiornato a una nuova versione.
 
 **Errore CORS**
 → Verifica che il deployment Apps Script sia su `Execute as: Me` e `Who has access: Anyone`. Il `Content-Type: text/plain` nel fetch è obbligatorio per evitare il preflight (già impostato in `api()`).
