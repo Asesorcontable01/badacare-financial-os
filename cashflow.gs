@@ -102,7 +102,7 @@ function getDashboardData() {
       let sheet = sheets[s];
       let sheetName = sheet.getName();
 
-      if (sheetName.toUpperCase() === "CATEGORIA") continue;
+      if (sheetName.toUpperCase() === "CATEGORIA" || sheetName.toUpperCase() === "SALDI") continue;
 
       let data = sheet.getDataRange().getValues();
       if (data.length < 2) continue;
@@ -155,8 +155,29 @@ function getDashboardData() {
       }
     }
 
+    // Saldi da estratto conto (foglio SALDI: BANCA | DATA | SALDO ESTRATTO | TIPO | FONTE)
+    let saldi = [];
+    const saldiSheet = ss.getSheetByName("SALDI");
+    if (saldiSheet) {
+      let sd = saldiSheet.getDataRange().getValues();
+      for (let i = 1; i < sd.length; i++) {
+        let acc = (sd[i][0] || "").toString().trim();
+        let v = sd[i][2];
+        let saldo = typeof v === 'number' ? v : parseFloat((v || "").toString().replace(/[^\d.,-]/g, '').replace(',', '.'));
+        if (!acc || isNaN(saldo)) continue;
+        let dv = sd[i][1];
+        let dstr = dv instanceof Date ? Utilities.formatDate(dv, "GMT+1", "dd/MM/yyyy") : (dv || "").toString().trim();
+        saldi.push({
+          acc: acc, data: dstr, saldo: saldo,
+          tipo: (sd[i][3] || "").toString().trim(),
+          fonte: (sd[i][4] || "").toString().trim()
+        });
+      }
+    }
+
     return {
       rows: rawData,
+      saldi: saldi,
       availableMonths: Array.from(monthsSet).sort().reverse(),
       availableAccounts: Array.from(accountsSet).sort(),
       availableCategories: masterCats.sort((a,b) => a.name.localeCompare(b.name))
@@ -199,7 +220,7 @@ function updateCategoryAcrossAllSheets(ss, oldCat, newCat) {
   const sheets = ss.getSheets();
   for (let s = 0; s < sheets.length; s++) {
     let sheet = sheets[s];
-    if (sheet.getName().toUpperCase() === "CATEGORIA") continue;
+    if (sheet.getName().toUpperCase() === "CATEGORIA" || sheet.getName().toUpperCase() === "SALDI") continue;
     let maxRow = sheet.getLastRow();
     if (maxRow < 2) continue;
 
