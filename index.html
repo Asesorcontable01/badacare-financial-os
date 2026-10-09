@@ -1059,6 +1059,26 @@ tbody tr:hover td{background:#f8fafc!important}
   .ins{padding:12px 14px}
   #mSel{flex:1 1 120px!important}
 }
+/* Saldi bancari */
+.sb-help{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--ink5);cursor:help}
+.sb-help .material-symbols-rounded{font-size:16px}
+.sb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.sb{border:1px solid var(--bd);border-radius:var(--r2);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.sb-hd{display:flex;align-items:center;gap:10px;min-width:0}
+.sb-nm{font-size:14px;font-weight:650;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-ac{font-size:11.5px;color:var(--ink5)}
+.sb-chip{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:650;padding:3px 9px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+.sb-chip .material-symbols-rounded{font-size:15px}
+.sb-ok{background:var(--pos-lt);color:var(--pos-text)}.sb-ko{background:var(--neg-lt);color:var(--neg-text)}.sb-na{background:#f1f5f9;color:var(--ink5)}
+.sb-l{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink5)}
+.sb-v{font-size:24px;font-weight:700;letter-spacing:-.02em;color:var(--ink);line-height:1.15}
+.sb-v.neg{color:var(--neg)}
+.sb-rows{display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:1px dashed var(--bd)}
+.sb-r{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--ink3)}
+.sb-r b{font-weight:600;color:var(--ink);white-space:nowrap}
+.sb-r b.neg{color:var(--neg)}
+.sb-note{font-size:12px;color:var(--neg-text);background:var(--neg-lt);border-radius:8px;padding:8px 10px;line-height:1.45}
+@media (max-width:768px){.sb-grid{grid-template-columns:1fr;gap:10px}.sb-v{font-size:21px}}
 @media (prefers-reduced-motion:reduce){.card,.ins,.kpi{animation:none!important}}
 
 </style>
@@ -1105,7 +1125,7 @@ tbody tr:hover td{background:#f8fafc!important}
     </form>
     <div class="login-foot">
       <span class="material-symbols-rounded">verified_user</span>
-      <span>Connessione sicura · v48</span>
+      <span>Connessione sicura · v49</span>
     </div>
   </div>
 </div>
@@ -1339,6 +1359,12 @@ tbody tr:hover td{background:#f8fafc!important}
 
           <div class="ins-grid" id="ins"></div>
 
+          <div class="card" id="saldi-card" style="margin-bottom:20px;display:none">
+            <div class="card-hd"><div class="card-ttl"><span class="material-symbols-rounded">account_balance</span>Saldi bancari<span class="card-tag">da estratto conto</span></div>
+              <div class="sb-help" title="Saldo da movimenti = saldo iniziale dell'estratto + tutti i movimenti del conto nel foglio fino alla data del saldo finale. Se coincide con il saldo dell'estratto, il conto quadra.">Come si calcola<span class="material-symbols-rounded">info</span></div></div>
+            <div class="card-body"><div class="sb-grid" id="saldi"></div></div>
+          </div>
+
           <div style="display:grid;grid-template-columns:3fr 2fr;gap:20px;margin-bottom:20px">
             <div class="card">
               <div class="card-hd">
@@ -1542,7 +1568,7 @@ function doLogout(){
 }
 
 /* ==================== APP STATE ==================== */
-let DB=[],CATS=[],COPTS=[];
+let DB=[],CATS=[],COPTS=[],SALDI=[];
 let TIPO='TUTTI',EIDX=-1,ACIDX=-1,PIDX=-1,EOLD=null,BCAT=false;
 let CH={bar:null,pie:null,line:null,pieX:null},MXD={},MXM=[];
 let FOPTS={months:[],accounts:[]};
@@ -1617,8 +1643,8 @@ function bootApp(){
 }
 
 function loadData(d){
-  DB=d.rows.sort((a,b)=>b.ts-a.ts);CATS=d.availableCategories;buildVizColors();
-  initSel(d);applyFilter();renderConti();
+  DB=d.rows.sort((a,b)=>b.ts-a.ts);CATS=d.availableCategories;SALDI=d.saldi||[];buildVizColors();
+  initSel(d);applyFilter();renderConti();renderSaldi();
 }
 function syncData(){
   showL('Sincronizzazione dati...');
@@ -1727,6 +1753,44 @@ function renderInsights(f,months,m,a){
   if(nc||nv)out.push(card('task_alt','i-warn','Da sistemare',(nc+nv).toLocaleString('it-IT')+' movimenti',[nc?nc.toLocaleString('it-IT')+' senza categoria':'',nv?nv.toLocaleString('it-IT')+' da verificare':''].filter(Boolean).join(' · '),"goConti()"));
   else out.push(card('verified','i-pos','Tutto in ordine','0 da sistemare','Categorie e verifiche complete'));
   el.innerHTML=out.join('');
+}
+/* Saldi bancari: saldo dell'estratto e verifica che i movimenti del foglio lo ricostruiscano */
+const dKey=s=>{const m=String(s||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);return m?m[3]+m[2].padStart(2,'0')+m[1].padStart(2,'0'):'';};
+function bankName(acc){
+  if(/0211/.test(acc))return'Territori del Monviso';
+  if(/4633/.test(acc))return'UniCredit';
+  if(/intesa/i.test(acc))return'Intesa Sanpaolo';
+  return acc.split('|')[0].trim();
+}
+function renderSaldi(){
+  const card=document.getElementById('saldi-card'),el=document.getElementById('saldi');if(!card)return;
+  const by={};SALDI.forEach(x=>{const k=dKey(x.data);if(!k)return;(by[x.acc]=by[x.acc]||[]).push({...x,k});});
+  const accs=Object.keys(by);card.style.display=accs.length?'':'none';if(!accs.length)return;
+  const sgn=r=>r.t==='ENTRATE'?r.m:-r.m,cls=v=>v<0?' neg':'';
+  const fd=k=>k.slice(6)+'/'+k.slice(4,6)+'/'+k.slice(0,4);
+  el.innerHTML=accs.map(acc=>{
+    const L=by[acc].sort((a,b)=>a.k.localeCompare(b.k));
+    const ini=L.find(x=>/inizial|apertura/i.test(x.tipo))||(L.length>1?L[0]:null);
+    const fin=[...L].reverse().find(x=>x!==ini)||L[L.length-1];
+    const mv=DB.filter(r=>r.acc===acc).map(r=>({r,k:dKey(r.dt)})).filter(x=>x.k);
+    let chip,rows=[],note='';
+    rows.push(`<div class="sb-r"><span>Saldo iniziale${ini?' al '+ini.data:''}</span><b class="${ini?cls(ini.saldo).trim():''}">${ini?fmt(ini.saldo):'—'}</b></div>`);
+    if(ini&&fin!==ini){
+      const inP=mv.filter(x=>x.k>ini.k&&x.k<=fin.k),calc=ini.saldo+inP.reduce((t,x)=>t+sgn(x.r),0),diff=Math.round((calc-fin.saldo)*100)/100;
+      rows.push(`<div class="sb-r"><span>Movimenti nel foglio (${inP.length.toLocaleString('it-IT')})</span><b class="${cls(calc-ini.saldo).trim()}">${(calc-ini.saldo>=0?'+':'')+fmt(calc-ini.saldo)}</b></div>`);
+      rows.push(`<div class="sb-r"><span>Saldo da movimenti</span><b class="${cls(calc).trim()}">${fmt(calc)}</b></div>`);
+      if(Math.abs(diff)<0.005)chip='<span class="sb-chip sb-ok"><span class="material-symbols-rounded">check_circle</span>Quadra</span>';
+      else{chip='<span class="sb-chip sb-ko"><span class="material-symbols-rounded">error</span>Non quadra</span>';
+        note=`<div class="sb-note">Differenza di <b>${fmt(Math.abs(diff))}</b>: nel foglio ${diff<0?'mancano entrate o ci sono uscite in più':'ci sono entrate in più o mancano uscite'} rispetto all'estratto.</div>`;}
+    }else chip='<span class="sb-chip sb-na"><span class="material-symbols-rounded">help</span>Manca saldo iniziale</span>';
+    const after=mv.filter(x=>x.k>fin.k);
+    if(after.length){const now=fin.saldo+after.reduce((t,x)=>t+sgn(x.r),0),last=after.reduce((m,x)=>x.k>m?x.k:m,'');
+      rows.push(`<div class="sb-r"><span>Saldo stimato al ${fd(last)} (+${after.length} mov.)</span><b class="${cls(now).trim()}">${fmt(now)}</b></div>`);}
+    const tip=esc([fin.fonte,ini&&ini!==fin?ini.fonte:''].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).join(' · '));
+    return `<div class="sb"><div class="sb-hd"><span class="ins-ic i-brand"><span class="material-symbols-rounded">account_balance</span></span><div style="min-width:0"><div class="sb-nm">${esc(bankName(acc))}</div><div class="sb-ac" title="${esc(acc)}">${esc((acc.match(/(\d{3,})\s*$/)||[])[1]?'Conto *'+acc.match(/(\d{3,})\s*$/)[1]:acc)}</div></div>${chip}</div>
+      <div title="${tip}"><div class="sb-l">Saldo estratto al ${esc(fin.data)}</div><div class="sb-v${cls(fin.saldo)}">${fmt(fin.saldo)}</div></div>
+      <div class="sb-rows">${rows.join('')}</div>${note}</div>`;
+  }).join('');
 }
 function goConti(){const n=document.querySelectorAll('.nav-link')[1];if(n)switchView('conti',n);}
 function perOptions(months,years){
