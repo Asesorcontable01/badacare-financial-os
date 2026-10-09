@@ -972,6 +972,46 @@ tbody tr:hover td{background:#f8fafc!important}
   .row-sub{gap:2px 8px;font-size:11.5px}
   .c-desc{overflow-wrap:anywhere}
 }
+/* ==================== v47 ==================== */
+.seg{display:inline-flex;background:#eef1f5;border-radius:9px;padding:3px;gap:2px}
+.seg button{border:none;background:none;font:inherit;font-size:13px;font-weight:500;color:var(--ink4);padding:6px 14px;border-radius:7px;cursor:pointer}
+.seg button:hover{color:var(--ink)}
+.seg button.active{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(16,24,40,.1)}
+.kpi{padding-bottom:12px}
+.kpi-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:20px;color:var(--ink6)}
+.dlt{font-size:12px;font-weight:600;padding:1px 7px;border-radius:6px}
+.dlt.up{background:var(--pos-lt);color:var(--pos-text)}.dlt.down{background:var(--neg-lt);color:var(--neg-text)}.dlt.flat{background:#f1f5f9;color:var(--ink5)}
+.dlt-l{font-size:12px;color:var(--ink6)}
+.kpi-spark{height:30px;margin-top:10px}.kpi-spark svg{width:100%;height:30px;display:block}
+.pl-v{display:none}
+.pl-p{min-width:44px;text-align:right}
+/* Matrice più ariosa */
+#mx.compact td{padding:9px 14px}
+#mx tbody tr:not(.mx-ent):not(.mx-usc):not(.mx-sub):not(.mx-saldo):not(.mx-cumul):not(.mx-marg) td{border-bottom-color:#f3f5f8}
+#mx td:nth-last-child(2){background:#fafbfc}
+#mx .mx-ent td:nth-last-child(2),#mx .mx-usc td:nth-last-child(2){background:#fff}
+.mx-saldo td{font-weight:700!important}
+/* Movimenti per giorno */
+#conti-wrap th:nth-child(2),#conti-wrap td:nth-child(2){display:none}
+.day-row td{background:#f8fafc!important;padding:8px 16px!important;border-bottom:1px solid var(--bd);text-align:left!important;position:sticky;top:39px;z-index:20}
+.day-row td{display:table-cell}
+.day-row:hover td{background:#f8fafc!important}
+.day-l{font-size:12.5px;font-weight:600;color:var(--ink3)}
+.day-t{float:right;font-size:12px;color:var(--ink5)}
+.day-t b{font-size:12px}
+@media (max-width:768px){
+  .m-date{display:none!important}
+  .seg button{padding:5px 10px;font-size:12px}
+  #tr-cf{flex-wrap:wrap!important}
+  #tr-cf .seg{order:-1}
+  #tr-cf select{flex:1 1 90px!important;min-width:0!important}
+  #tr-cf .sw{order:5;width:100%}
+  .kpi-spark{display:none}
+  .kpi-foot{display:flex!important;font-size:11px}
+  .dlt-l{display:none}
+  .day-row td{top:35px;padding:7px 10px!important}
+  .day-t{float:none;display:block;margin-top:2px}
+}
 </style>
 </head>
 <body>
@@ -1016,7 +1056,7 @@ tbody tr:hover td{background:#f8fafc!important}
     </form>
     <div class="login-foot">
       <span class="material-symbols-rounded">verified_user</span>
-      <span>Connessione sicura · v46</span>
+      <span>Connessione sicura · v47</span>
     </div>
   </div>
 </div>
@@ -1207,7 +1247,8 @@ tbody tr:hover td{background:#f8fafc!important}
       </div>
       <div class="tb-r" id="tr-cf">
         <label class="sw" title="Esclude addebiti Nexi/PayPal sul c/c, payout Stripe e giroconti tra conti propri (il dettaglio è già nella scheda del conto)"><input type="checkbox" id="x-int" checked onchange="togInterni(this)">Escludi giroconti<span class="hide-m">&nbsp;interni</span></label>
-        <select id="mFilter" onchange="applyFilter()" class="inp" style="min-width:180px"></select>
+        <div class="seg" id="per-seg"></div>
+        <select id="mFilter" onchange="applyFilter()" class="inp" style="min-width:150px"></select>
         <select id="aFilter" onchange="applyFilter()" class="inp" style="min-width:140px"></select>
       </div>
       <div class="tb-r" id="tr-kt" style="display:none">
@@ -1228,22 +1269,22 @@ tbody tr:hover td{background:#f8fafc!important}
             <div class="kpi kpi-e">
               <div class="kpi-label"><span class="material-symbols-rounded" style="color:var(--pos)">trending_up</span> Entrate totali</div>
               <div class="kpi-value" id="kpi-e">€ 0,00</div>
-              <div class="kpi-foot"><span class="material-symbols-rounded">calendar_today</span>Periodo selezionato</div>
+              <div class="kpi-foot" id="kf-e"></div><div class="kpi-spark" id="ks-e"></div>
             </div>
             <div class="kpi kpi-u">
               <div class="kpi-label"><span class="material-symbols-rounded" style="color:var(--neg)">trending_down</span> Uscite totali</div>
               <div class="kpi-value" id="kpi-u">€ 0,00</div>
-              <div class="kpi-foot"><span class="material-symbols-rounded">calendar_today</span>Periodo selezionato</div>
+              <div class="kpi-foot" id="kf-u"></div><div class="kpi-spark" id="ks-u"></div>
             </div>
             <div class="kpi kpi-s">
               <div class="kpi-label"><span class="material-symbols-rounded" style="color:var(--brand)">account_balance_wallet</span> Saldo netto</div>
               <div class="kpi-value" id="kpi-s">€ 0,00</div>
-              <div class="kpi-foot"><span class="material-symbols-rounded">calculate</span>Entrate − Uscite</div>
+              <div class="kpi-foot" id="kf-s"></div><div class="kpi-spark" id="ks-s"></div>
             </div>
             <div class="kpi kpi-m">
               <div class="kpi-label"><span class="material-symbols-rounded" style="color:var(--warn)">percent</span> Margine operativo</div>
               <div class="kpi-value" id="kpi-m">0.00%</div>
-              <div class="kpi-foot"><span class="material-symbols-rounded">insights</span>Su entrate totali</div>
+              <div class="kpi-foot" id="kf-m"></div><div class="kpi-spark" id="ks-m"></div>
             </div>
           </div>
 
@@ -1484,9 +1525,21 @@ function exclInterni(){const el=document.getElementById('x-int');return !el||el.
 function cfRows(){return exclInterni()?DB.filter(r=>!isInterno(r)):DB;}
 function togInterni(el){try{localStorage.setItem('bdc_excl_int',el.checked?'1':'0');}catch(e){}applyFilter();}
 
+/* Colori categorie: palette categoriale fissa (8 tinte validate per daltonismo),
+   assegnata una volta per categoria in ordine di importo totale, così il colore segue
+   la categoria e non cambia cambiando filtro. Oltre la 7ª: grigio ("Altre"). */
+const VIZ_PAL=['#2a78d6','#eb6834','#1baf7a','#eda100','#e87ba4','#008300','#4a3aa7'],VIZ_OTHER='#a3acb9';
+let VIZC={};
+function buildVizColors(){
+  VIZC={};
+  ['USCITE','ENTRATE'].forEach(t=>{
+    const tot={};DB.filter(r=>r.t===t&&!isInterno(r)).forEach(r=>tot[r.c]=(tot[r.c]||0)+r.m);
+    const used=new Set();
+    Object.keys(tot).sort((a,b)=>tot[b]-tot[a]).forEach(n=>{if(VIZC[n])return;const free=VIZ_PAL.find(c=>!used.has(c));VIZC[n]=free||VIZ_OTHER;if(free)used.add(free);});
+  });
+}
 function cc(n){
-  const c=CATS.find(x=>x.name===n);
-  const h=c?c.color:'#2563eb';
+  const h=VIZC[n]||VIZ_OTHER;
   const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);
   const bg=`rgba(${r},${g},${b},.15)`;
   const bdr=`rgba(${r},${g},${b},.4)`;
@@ -1504,7 +1557,7 @@ function bootApp(){
 }
 
 function loadData(d){
-  DB=d.rows.sort((a,b)=>b.ts-a.ts);CATS=d.availableCategories;
+  DB=d.rows.sort((a,b)=>b.ts-a.ts);CATS=d.availableCategories;buildVizColors();
   initSel(d);applyFilter();renderConti();
 }
 function syncData(){
@@ -1527,10 +1580,65 @@ window.onload=function(){
 
 function initSel(d){
   const fi=(id,l,ph)=>{document.getElementById(id).innerHTML=`<option value="all">${ph}</option>`+l.map(x=>`<option value="${x}">${x}</option>`).join('');};
-  fi('mFilter',d.availableMonths,'Tutti i periodi');fi('aFilter',d.availableAccounts,'Tutti i conti');
+  const mf=document.getElementById('mFilter'),prevM=mf.value;
+  const months=d.availableMonths||[],years=[...new Set(months.map(x=>String(x).slice(0,4)))].sort().reverse();
+  mf.innerHTML=perOptions(months,years);
+  // Default: l'anno più recente (meno colonne vuote nella matrice); mantiene la scelta dopo un Aggiorna
+  mf.value=prevM&&[...mf.options].some(o=>o.value===prevM)?prevM:(years.length?'Y'+years[0]:'all');
+  renderPerSeg(years);
+  fi('aFilter',d.availableAccounts,'Tutti i conti');
   fi('acc-f',d.availableAccounts,'Tutti i conti');fi('exp-conto',d.availableAccounts,'Tutti i conti');
   FOPTS={months:d.availableMonths||[],accounts:d.availableAccounts||[]};
 }
+
+function renderPerSeg(years){
+  const el=document.getElementById('per-seg');if(!el)return;
+  el.innerHTML=[...years.slice(0,3).map(y=>['Y'+y,y]),['all','Tutto']].map(([v,l])=>`<button data-v="${v}" onclick="setPer('${v}')">${l}</button>`).join('');
+  syncPerSeg();
+}
+function setPer(v){document.getElementById('mFilter').value=v;applyFilter();}
+function syncPerSeg(){const v=document.getElementById('mFilter').value;document.querySelectorAll('#per-seg button').forEach(b=>b.classList.toggle('active',b.dataset.v===v));}
+function fmtK(v){const a=Math.abs(v);return a>=1000?'€ '+(v/1000).toLocaleString('it-IT',{maximumFractionDigits:1})+'k':fmt(v);}
+function kspark(vals,color){
+  if(vals.length<2)return'';
+  const w=120,h=30,mx=Math.max(...vals),mn=Math.min(...vals),rg=mx-mn||1;
+  const pts=vals.map((v,i)=>[(i/(vals.length-1)*w).toFixed(1),(h-3-(v-mn)/rg*(h-6)).toFixed(1)]);
+  const line=pts.map(p=>p.join(',')).join(' ');
+  return`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polygon points="0,${h} ${line} ${w},${h}" fill="${color}" opacity=".08"/><polyline points="${line}" fill="none" stroke="${color}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`;
+}
+// Variazione vs periodo precedente: anno -> stessi mesi dell'anno prima; mese -> mese prima
+function prevPeriodRows(m,a,months){
+  let keep;
+  if(m[0]==='Y'){const py=String(+m.slice(1)-1);const mm=new Set(months.map(p=>String(p).slice(5)));keep=p=>String(p).startsWith(py)&&mm.has(String(p).slice(5));}
+  else if(m!=='all'){const [y,mo]=m.split('-').map(Number);const d=new Date(y,mo-2,1);const pm=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');keep=p=>p===pm;}
+  else return null;
+  const rows=cfRows().filter(r=>keep(r.p)&&(a==='all'||r.acc===a));
+  return rows.length?rows:null;
+}
+function renderKpiExtra(f,months,m,a,cur){
+  const pr=prevPeriodRows(m,a,months);
+  const lbl=m[0]==='Y'?'vs stesso periodo '+(+m.slice(1)-1):'vs mese precedente';
+  let pe=0,pu=0;if(pr)pr.forEach(r=>{if(r.t==='ENTRATE')pe+=r.m;else pu+=r.m;});
+  const cs=cur.e-cur.u,ps=pe-pu,cm=cur.e>0?cs/cur.e*100:0,pm=pe>0?ps/pe*100:0;
+  const chip=(d,good,txt)=>`<span class="dlt ${Math.abs(d)<0.05?'flat':(good?'up':'down')}">${d>0?'▲':d<0?'▼':'•'} ${txt}</span>`;
+  const pct=(c,p)=>p?((c-p)/Math.abs(p)*100):0;
+  const set=(k,html)=>{document.getElementById('kf-'+k).innerHTML=pr?html+`<span class="dlt-l">${lbl}</span>`:(m==='all'?'Tutto il periodo':'');};
+  const de=pct(cur.e,pe),du=pct(cur.u,pu),ds=pct(cs,ps),dm=cm-pm;
+  set('e',chip(de,de>=0,Math.abs(de).toFixed(1)+'%'));
+  set('u',chip(du,du<=0,Math.abs(du).toFixed(1)+'%'));
+  set('s',chip(ds,ds>=0,Math.abs(ds).toFixed(1)+'%'));
+  set('m',chip(dm,dm>=0,Math.abs(dm).toFixed(1)+' pt'));
+  const per=months.map(p=>{let e=0,u=0;f.forEach(r=>{if(r.p===p){if(r.t==='ENTRATE')e+=r.m;else u+=r.m;}});return{e,u};});
+  document.getElementById('ks-e').innerHTML=kspark(per.map(x=>x.e),'#0f9f6e');
+  document.getElementById('ks-u').innerHTML=kspark(per.map(x=>x.u),'#e5484d');
+  document.getElementById('ks-s').innerHTML=kspark(per.map(x=>x.e-x.u),'#2563eb');
+  document.getElementById('ks-m').innerHTML=kspark(per.map(x=>x.e>0?(x.e-x.u)/x.e*100:0),'#d97706');
+}
+function perOptions(months,years){
+  return `<option value="all">Tutti i periodi</option><optgroup label="Anno">${years.map(y=>`<option value="Y${y}">Anno ${y}</option>`).join('')}</optgroup><optgroup label="Mese">${[...months].reverse().map(x=>`<option value="${x}">${x}</option>`).join('')}</optgroup>`;
+}
+// Periodo: 'all', 'Y2026' (anno intero) o 'YYYY-MM'
+const inPer=(r,m)=>m==='all'||r.p===m||(m[0]==='Y'&&String(r.p).startsWith(m.slice(1)));
 
 function switchView(v,el){
   document.querySelectorAll('.view').forEach(s=>s.classList.remove('active'));
@@ -1671,7 +1779,7 @@ function execBulkStato(ok){const ch=document.querySelectorAll('.rcb:checked');if
 /* ==================== CASHFLOW ==================== */
 function applyFilter(){
   const m=document.getElementById('mFilter').value,a=document.getElementById('aFilter').value;
-  const f=cfRows().filter(r=>(m==='all'||r.p===m)&&(a==='all'||r.acc===a));
+  const f=cfRows().filter(r=>inPer(r,m)&&(a==='all'||r.acc===a));
   const months=[...new Set(f.map(r=>r.p))].sort();
   let ent=0,usc=0;const mx={ENTRATE:{},USCITE:{}};
   f.forEach(r=>{if(r.t==='ENTRATE')ent+=r.m;else usc+=r.m;if(!mx[r.t][r.c])mx[r.t][r.c]={total:0,vals:{}};mx[r.t][r.c].vals[r.p]=(mx[r.t][r.c].vals[r.p]||0)+r.m;mx[r.t][r.c].total+=r.m;});
@@ -1681,6 +1789,7 @@ function applyFilter(){
   const se=document.getElementById('kpi-s');se.innerText=fmt(s);se.style.color=s>=0?'var(--brand)':'var(--neg)';
   const me=document.getElementById('kpi-m');me.innerText=mg.toFixed(2)+'%';me.style.color=mg>=0?'var(--warn)':'var(--neg)';
   MXD=mx;MXM=months;renderCharts(months,f);renderMatrix(mx,months);
+  renderKpiExtra(f,months,m,a,{e:ent,u:usc});syncPerSeg();
 }
 
 /* ==================== MATRICE PRO ==================== */
@@ -1882,7 +1991,7 @@ function setupMxSticky(){
     const TB=getTopbarH();
     
     // Show floater when card top has crossed under topbar AND matrix bottom is still visible enough
-    const visible=cardRect.top<TB && mxRect.bottom>TB+theadH+10;
+    const visible=mxRect.top<TB && mxRect.bottom>TB+theadH+10;
     
     if(visible){
       // Rebuild clone if widths changed (or first show)
@@ -1943,15 +2052,17 @@ function renderCharts(months,data){
 
   const cs={};data.filter(r=>r.t==='USCITE').forEach(r=>cs[r.c]=(cs[r.c]||0)+r.m);
   const tot=Object.values(cs).reduce((a,b)=>a+b,0);
-  const cols=Object.keys(cs).map(n=>cc(n).hex);
+  const ord=Object.keys(cs).sort((a,b)=>cs[b]-cs[a]);
+  const pie=[];let rest=0;ord.forEach(n=>{if(pie.length<7&&cc(n).hex!==VIZ_OTHER)pie.push([n,cs[n]]);else rest+=cs[n];});
+  if(rest>0)pie.push(['Altre categorie',rest]);
+  const cols=pie.map(([n])=>n==='Altre categorie'?VIZ_OTHER:cc(n).hex);
   if(CH.pie)CH.pie.destroy();
   document.getElementById('pie-tot').innerText=fmt(tot).replace(/,\d\d(?=\s|$)/,'');
-  document.getElementById('pie-leg').innerHTML=Object.keys(cs).sort((a,b)=>cs[b]-cs[a]).map(n=>{
-    const p=tot>0?(cs[n]/tot*100).toFixed(1):'0.0';
-    const cv=cc(n);
-    return`<div class="pl-row" title="${esc(n)}: ${fmt(cs[n])}"><span class="cdot" style="background:${cv.hex}"></span><span class="pl-n">${esc(n)}</span><span class="pl-p">${p}%</span></div>`;
+  document.getElementById('pie-leg').innerHTML=pie.map(([n,v],i)=>{
+    const p=tot>0?(v/tot*100).toFixed(1):'0.0';
+    return`<div class="pl-row" title="${esc(n)}: ${fmt(v)}"><span class="cdot" style="background:${cols[i]}"></span><span class="pl-n">${esc(n)}</span><span class="pl-v">${fmtK(v)}</span><span class="pl-p">${p}%</span></div>`;
   }).join('');
-  CH.pie=new Chart(document.getElementById('ch-pie'),{type:'doughnut',data:{labels:Object.keys(cs),datasets:[{data:Object.values(cs),backgroundColor:cols,borderWidth:2,borderColor:'#ffffff',hoverOffset:4}]},options:{...base,cutout:'74%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${fmt(ctx.raw)}`}}}}});
+  CH.pie=new Chart(document.getElementById('ch-pie'),{type:'doughnut',data:{labels:pie.map(x=>x[0]),datasets:[{data:pie.map(x=>x[1]),backgroundColor:cols,borderWidth:2,borderColor:'#ffffff',hoverOffset:4}]},options:{...base,cutout:'74%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${fmt(ctx.raw)}`}}}}});
 
   const ld=ts.map(t=>({mg:t.e>0?parseFloat(((t.e-t.u)/t.e*100).toFixed(2)):0,s:t.e-t.u}));
   if(CH.line)CH.line.destroy();
@@ -1972,7 +2083,7 @@ function renderCharts(months,data){
 function openPieModal(){
   // Populate selects
   const fi=(id,l,ph)=>{document.getElementById(id).innerHTML=`<option value="all">${ph}</option>`+l.map(x=>`<option value="${x}">${x}</option>`).join('');};
-  fi('px-period',FOPTS.months,'Tutti i periodi');
+  document.getElementById('px-period').innerHTML=perOptions(FOPTS.months,[...new Set(FOPTS.months.map(x=>String(x).slice(0,4)))].sort().reverse());
   fi('px-account',FOPTS.accounts,'Tutti i conti');
   // Inherit current main filters as starting values (so user sees same data they were looking at)
   const mv=document.getElementById('mFilter')?.value||'all';
@@ -1987,7 +2098,7 @@ function openPieModal(){
 function renderPieModal(){
   const m=document.getElementById('px-period').value;
   const a=document.getElementById('px-account').value;
-  const f=cfRows().filter(r=>r.t==='USCITE'&&(m==='all'||r.p===m)&&(a==='all'||r.acc===a));
+  const f=cfRows().filter(r=>r.t==='USCITE'&&inPer(r,m)&&(a==='all'||r.acc===a));
   const cs={};
   f.forEach(r=>cs[r.c]=(cs[r.c]||0)+r.m);
   const entries=Object.entries(cs).sort((x,y)=>y[1]-x[1]);
@@ -2062,6 +2173,8 @@ function onlyDaVerificare(){
   renderConti();updTags();
 }
 function showMore(){ROW_LIMIT+=500;renderConti(true);}
+const GIORNI=['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'],MESI=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+function dayLabel(r){const p=String(r.dt).split('/');if(p.length!==3)return r.dt;const d=new Date(+p[2],+p[1]-1,+p[0]);const g=GIORNI[d.getDay()];return`${g[0].toUpperCase()+g.slice(1)} ${d.getDate()} ${MESI[d.getMonth()]} ${d.getFullYear()}`;}
 function renderConti(keepLimit){
   if(!keepLimit)ROW_LIMIT=500;
   const f=contiFiltered();
@@ -2069,11 +2182,16 @@ function renderConti(keepLimit){
   document.getElementById('rcount').innerText=f.length>shown
     ?`${shown.toLocaleString('it-IT')} di ${f.length.toLocaleString('it-IT')} transazioni`
     :`${f.length.toLocaleString('it-IT')} transazioni`;
+  const dayTot={};f.forEach(r=>{const t=dayTot[r.dt]||(dayTot[r.dt]={e:0,u:0,n:0});t.n++;if(r.t==='ENTRATE')t.e+=r.m;else t.u+=r.m;});
+  let lastDay=null;
   let h=f.slice(0,ROW_LIMIT).map((r,ri)=>{
     const cv=cc(r.c),idx=DB.indexOf(r);
+    let dh='';
+    if(r.dt!==lastDay){lastDay=r.dt;const t=dayTot[r.dt];
+      dh=`<tr class="day-row"><td colspan="6"><span class="day-l">${esc(dayLabel(r))}</span><span class="day-t">${t.n} mov.${t.e?` · <b class="ap">+${fmt(t.e)}</b>`:''}${t.u?` · <b class="an">−${fmt(t.u)}</b>`:''}</span></td></tr>`;}
     const doc=r.docRic?`<span class="doc"><span class="material-symbols-rounded">receipt</span>${esc(r.docRic)}</span>`:'';
     const att=r.docUrl?`<span class="doc" title="Documento allegato"><span class="material-symbols-rounded">attach_file</span>PDF</span>`:'';
-    return`<tr style="animation-delay:${Math.min(ri*.015,.25)}s">
+    return dh+`<tr>
       <td style="text-align:left;padding-left:16px;width:40px" onclick="event.stopPropagation()"><input type="checkbox" class="rcb" data-idx="${idx}" onclick="updBulk()"></td>
       <td style="text-align:left;cursor:pointer" onclick="openRD(${idx})"><span class="c-date">${esc(r.dt)}</span></td>
       <td style="text-align:left;cursor:pointer;max-width:320px" onclick="openRD(${idx})">
