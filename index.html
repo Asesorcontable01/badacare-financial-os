@@ -9,7 +9,7 @@
 <title>Badacare Financial OS</title>
 <base target="_top">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,1,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,1,0&display=block" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
@@ -1116,32 +1116,32 @@ tbody tr:hover td{background:#f8fafc!important}
       <div class="login-field">
         <label class="login-label">Utente</label>
         <div class="login-input-wrap">
-          <span class="material-symbols-rounded">person</span>
+          <span translate="no" class="material-symbols-rounded notranslate">person</span>
           <input type="text" id="login-user" class="login-input" autocomplete="off" spellcheck="false" style="text-transform:uppercase;letter-spacing:.04em" oninput="this.value=this.value.toUpperCase()" autofocus>
         </div>
       </div>
       <div class="login-field">
         <label class="login-label">Password</label>
         <div class="login-input-wrap">
-          <span class="material-symbols-rounded">lock</span>
+          <span translate="no" class="material-symbols-rounded notranslate">lock</span>
           <input type="password" id="login-pass" class="login-input" autocomplete="current-password">
           <button type="button" class="login-toggle" onclick="togglePass()" tabindex="-1">
-            <span id="pass-icon" class="material-symbols-rounded">visibility</span>
+            <span id="pass-icon" translate="no" class="material-symbols-rounded notranslate">visibility</span>
           </button>
         </div>
       </div>
       <div id="login-err" class="login-error" style="display:none">
-        <span class="material-symbols-rounded" style="font-size:16px">error</span>
+        <span translate="no" class="material-symbols-rounded notranslate" style="font-size:16px">error</span>
         <span id="login-err-msg">Credenziali non valide</span>
       </div>
       <button type="submit" id="login-btn" class="login-btn">
         <span>Accedi</span>
-        <span class="material-symbols-rounded">arrow_forward</span>
+        <span translate="no" class="material-symbols-rounded notranslate">arrow_forward</span>
       </button>
     </form>
     <div class="login-foot">
-      <span class="material-symbols-rounded">verified_user</span>
-      <span>Connessione sicura · v49</span>
+      <span translate="no" class="material-symbols-rounded notranslate">verified_user</span>
+      <span>Connessione sicura · v50</span>
     </div>
   </div>
 </div>
@@ -1164,22 +1164,22 @@ tbody tr:hover td{background:#f8fafc!important}
         <div class="mttl">Esporta Prima Nota</div>
         <div class="msub">Configura i filtri e scarica il registro</div>
       </div>
-      <button onclick="closeModal('mo-exp')" class="btn btn-ghost btn-sm" style="padding:4px"><span class="material-symbols-rounded">close</span></button>
+      <button onclick="closeModal('mo-exp')" class="btn btn-ghost btn-sm" style="padding:4px"><span translate="no" class="material-symbols-rounded notranslate">close</span></button>
     </div>
     <div class="mbdy">
       <div>
         <label class="flbl">Tipo di movimento</label>
         <div class="radio-grid">
           <div class="radio-card sel" data-val="ALL" onclick="selExpType(this)">
-            <span class="material-symbols-rounded">all_inclusive</span>
+            <span translate="no" class="material-symbols-rounded notranslate">all_inclusive</span>
             <div class="radio-card-lbl">Tutto</div>
           </div>
           <div class="radio-card" data-val="ENTRATE" onclick="selExpType(this)">
-            <span class="material-symbols-rounded">trending_up</span>
+            <span translate="no" class="material-symbols-rounded notranslate">trending_up</span>
             <div class="radio-card-lbl">Solo Entrate</div>
           </div>
           <div class="radio-card" data-val="USCITE" onclick="selExpType(this)">
-            <span class="material-symbols-rounded">trending_down</span>
+            <span translate="no" class="material-symbols-rounded notranslate">trending_down</span>
             <div class="radio-card-lbl">Solo Uscite</div>
           </div>
         </div>
@@ -1199,7 +1199,7 @@ tbody tr:hover td{background:#f8fafc!important}
         </div>
       </div>
       <div class="export-summary" id="exp-summary">
-        <span class="material-symbols-rounded">summarize</span>
+        <span translate="no" class="material-symbols-rounded notranslate">summarize</span>
         <div class="export-summary-text">
           <span class="export-summary-count" id="exp-count">0</span> transazioni · 
           Totale <span class="export-summary-count" id="exp-total">€ 0,00</span>
@@ -1208,7 +1208,7 @@ tbody tr:hover td{background:#f8fafc!important}
     </div>
     <div class="mft">
       <button onclick="closeModal('mo-exp')" class="btn btn-ghost btn-sm">Annulla</button>
-      <button onclick="runExport()" class="btn btn-primary btn-sm"><span class="material-symbols-rounded">download</span>Scarica Excel</button>
+      <button onclick="runExport()" class="btn btn-primary btn-sm"><span translate="no" class="material-symbols-rounded notranslate">download</span>Scarica Excel</button>
     </div>
   </div>
 </div>
@@ -1216,13 +1216,13 @@ tbody tr:hover td{background:#f8fafc!important}
 <!-- ==================== SETTINGS MODAL ==================== -->
 <div class="mo" id="mo-set" onclick="if(event.target===this)closeModal('mo-set')">
   <div class="modal" style="width:470px;max-height:84vh;display:flex;flex-direction:column">
-    <div class="mhd"><div><div class="mttl">Impostazioni</div><div class="msub">Categorie master</div></div><button onclick="closeModal('mo-set')" class="btn btn-ghost btn-sm" style="padding:4px"><span class="material-symbols-rounded">close</span></button></div>
+    <div class="mhd"><div><div class="mttl">Impostazioni</div><div class="msub">Categorie master</div></div><button onclick="closeModal('mo-set')" class="btn btn-ghost btn-sm" style="padding:4px"><span translate="no" class="material-symbols-rounded notranslate">close</span></button></div>
     <div style="padding:16px 20px;border-bottom:1px solid var(--bd);flex-shrink:0;background:var(--surf2)">
-      <div class="fbar" style="margin-bottom:12px"><div class="sbox"><span class="material-symbols-rounded">search</span><input type="text" id="set-q" oninput="renderCS()" placeholder="Cerca..."></div></div>
+      <div class="fbar" style="margin-bottom:12px"><div class="sbox"><span translate="no" class="material-symbols-rounded notranslate">search</span><input type="text" id="set-q" oninput="renderCS()" placeholder="Cerca..."></div></div>
       <div style="display:flex;gap:10px;align-items:center">
         <input type="color" id="nc-col" value="#2563eb" style="height:38px;width:38px;border:1px solid var(--bd);border-radius:var(--r2);cursor:pointer;background:var(--surf);padding:2px">
         <input type="text" id="nc-name" placeholder="Nome categoria..." class="finp" style="flex:1">
-        <button id="btn-ac" onclick="saveCM()" class="btn btn-primary btn-sm" style="white-space:nowrap"><span class="material-symbols-rounded">add</span>Aggiungi</button>
+        <button id="btn-ac" onclick="saveCM()" class="btn btn-primary btn-sm" style="white-space:nowrap"><span translate="no" class="material-symbols-rounded notranslate">add</span>Aggiungi</button>
       </div>
     </div>
     <div id="cs-list" style="flex:1;overflow-y:auto;max-height:300px"></div>
@@ -1237,13 +1237,13 @@ tbody tr:hover td{background:#f8fafc!important}
     </div>
     <div class="mbdy" style="text-align:center;padding:24px">
       <div style="width:56px;height:56px;border-radius:50%;background:var(--neg-lt);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
-        <span class="material-symbols-rounded" style="font-size:28px;color:var(--neg-text)">logout</span>
+        <span translate="no" class="material-symbols-rounded notranslate" style="font-size:28px;color:var(--neg-text)">logout</span>
       </div>
       <p style="font-size:13px;color:var(--ink3)">Le modifiche non salvate andranno perse.</p>
     </div>
     <div class="mft">
       <button onclick="closeModal('mo-logout')" class="btn btn-ghost btn-sm">Annulla</button>
-      <button onclick="doLogout()" class="btn btn-danger btn-sm"><span class="material-symbols-rounded">logout</span>Esci</button>
+      <button onclick="doLogout()" class="btn btn-danger btn-sm"><span translate="no" class="material-symbols-rounded notranslate">logout</span>Esci</button>
     </div>
   </div>
 </div>
@@ -1253,10 +1253,10 @@ tbody tr:hover td{background:#f8fafc!important}
   <div class="modal" style="width:920px;max-width:95vw">
     <div class="mhd">
       <div>
-        <div class="mttl"><span class="material-symbols-rounded" style="vertical-align:-4px;color:var(--brand);margin-right:6px">donut_small</span>Uscite per categoria</div>
+        <div class="mttl"><span translate="no" class="material-symbols-rounded notranslate" style="vertical-align:-4px;color:var(--brand);margin-right:6px">donut_small</span>Uscite per categoria</div>
         <div class="msub">Analisi dettagliata con filtri indipendenti</div>
       </div>
-      <button onclick="closePieModal()" class="btn btn-ghost btn-sm" style="padding:4px"><span class="material-symbols-rounded">close</span></button>
+      <button onclick="closePieModal()" class="btn btn-ghost btn-sm" style="padding:4px"><span translate="no" class="material-symbols-rounded notranslate">close</span></button>
     </div>
     <div class="mbdy" style="padding:16px 20px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
@@ -1270,7 +1270,7 @@ tbody tr:hover td{background:#f8fafc!important}
         </div>
       </div>
       <div class="export-summary" id="px-summary" style="margin-bottom:16px">
-        <span class="material-symbols-rounded">trending_down</span>
+        <span translate="no" class="material-symbols-rounded notranslate">trending_down</span>
         <div class="export-summary-text">
           Totale uscite <span class="export-summary-count" id="px-total">€ 0,00</span> · 
           <span class="export-summary-count" id="px-cats">0</span> categorie · 
@@ -1301,8 +1301,8 @@ tbody tr:hover td{background:#f8fafc!important}
 
 <div id="stato-menu" class="fmenu" style="width:210px;display:none;flex-direction:column;padding:8px">
   <div style="padding:6px 10px 4px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4)">Stato</div>
-  <div class="stato-opt" onclick="execBulkStato(true)" style="color:var(--pos-text)"><span class="material-symbols-rounded" style="font-size:18px;color:var(--pos)">check_circle</span>Ok — Verificato</div>
-  <div class="stato-opt" onclick="execBulkStato(false)" style="color:var(--ink3)"><span class="material-symbols-rounded" style="font-size:18px;color:var(--ink4)">pending</span>Da verificare</div>
+  <div class="stato-opt" onclick="execBulkStato(true)" style="color:var(--pos-text)"><span translate="no" class="material-symbols-rounded notranslate" style="font-size:18px;color:var(--pos)">check_circle</span>Ok — Verificato</div>
+  <div class="stato-opt" onclick="execBulkStato(false)" style="color:var(--ink3)"><span translate="no" class="material-symbols-rounded notranslate" style="font-size:18px;color:var(--ink4)">pending</span>Da verificare</div>
 </div>
 
 <!-- ==================== APP ==================== -->
@@ -1314,12 +1314,12 @@ tbody tr:hover td{background:#f8fafc!important}
     </div>
     <nav class="sb-nav">
       <div class="sb-sec">Analisi</div>
-      <div class="nav-link active" onclick="switchView('cashflow',this)"><span class="material-symbols-rounded">area_chart</span>Cashflow</div>
-      <div class="nav-link" onclick="switchView('conti',this)"><span class="material-symbols-rounded">receipt_long</span>Movimenti</div>
+      <div class="nav-link active" onclick="switchView('cashflow',this)"><span translate="no" class="material-symbols-rounded notranslate">area_chart</span>Cashflow</div>
+      <div class="nav-link" onclick="switchView('conti',this)"><span translate="no" class="material-symbols-rounded notranslate">receipt_long</span>Movimenti</div>
     </nav>
     <div class="sb-foot">
-      <div class="nav-link" onclick="openSett()"><span class="material-symbols-rounded">settings</span>Impostazioni</div>
-      <div class="nav-link sb-logout" onclick="askLogout()"><span class="material-symbols-rounded">logout</span>Esci</div>
+      <div class="nav-link" onclick="openSett()"><span translate="no" class="material-symbols-rounded notranslate">settings</span>Impostazioni</div>
+      <div class="nav-link sb-logout" onclick="askLogout()"><span translate="no" class="material-symbols-rounded notranslate">logout</span>Esci</div>
     </div>
   </div>
   <div class="sb-backdrop" id="sb-backdrop" onclick="closeSidebar()"></div>
@@ -1327,8 +1327,8 @@ tbody tr:hover td{background:#f8fafc!important}
   <div id="main">
     <div id="topbar">
       <div class="tb-l">
-        <button class="sb-toggle" onclick="toggleSidebar()" aria-label="Menu"><span class="material-symbols-rounded">menu</span></button>
-        <div class="tb-title" id="pg-title"><span class="material-symbols-rounded">area_chart</span>Cash Flow</div>
+        <button class="sb-toggle" onclick="toggleSidebar()" aria-label="Menu"><span translate="no" class="material-symbols-rounded notranslate">menu</span></button>
+        <div class="tb-title" id="pg-title"><span translate="no" class="material-symbols-rounded notranslate">area_chart</span>Cash Flow</div>
       </div>
       <div class="tb-r" id="tr-cf">
         <label class="sw" title="Esclude addebiti Nexi/PayPal sul c/c, payout Stripe e giroconti tra conti propri (il dettaglio è già nella scheda del conto)"><input type="checkbox" id="x-int" checked onchange="togInterni(this)">Escludi giroconti<span class="hide-m">&nbsp;interni</span></label>
@@ -1337,13 +1337,13 @@ tbody tr:hover td{background:#f8fafc!important}
         <select id="aFilter" onchange="applyFilter()" class="inp" style="min-width:140px"></select>
       </div>
       <div class="tb-r" id="tr-kt" style="display:none">
-        <button onclick="syncData()" class="btn btn-ghost btn-sm"><span class="material-symbols-rounded">sync</span>Aggiorna</button>
-        <button id="btn-bc" onclick="openBulkCat(event)" class="btn btn-sm" style="display:none;background:var(--brand-lt);border-color:var(--brand-md);color:var(--brand-d)"><span class="material-symbols-rounded">label</span>Categoria <span id="bn-c">0</span></button>
-        <button id="btn-bs" onclick="openStatoMenu(event)" class="btn btn-sm btn-success" style="display:none"><span class="material-symbols-rounded">toggle_on</span>Stato <span id="bn-s">0</span></button>
-        <button id="btn-bd" onclick="execBulkDel()" class="btn btn-sm btn-danger" style="display:none"><span class="material-symbols-rounded">delete</span>Elimina <span id="bn-d">0</span></button>
+        <button onclick="syncData()" class="btn btn-ghost btn-sm"><span translate="no" class="material-symbols-rounded notranslate">sync</span>Aggiorna</button>
+        <button id="btn-bc" onclick="openBulkCat(event)" class="btn btn-sm" style="display:none;background:var(--brand-lt);border-color:var(--brand-md);color:var(--brand-d)"><span translate="no" class="material-symbols-rounded notranslate">label</span>Categoria <span id="bn-c">0</span></button>
+        <button id="btn-bs" onclick="openStatoMenu(event)" class="btn btn-sm btn-success" style="display:none"><span translate="no" class="material-symbols-rounded notranslate">toggle_on</span>Stato <span id="bn-s">0</span></button>
+        <button id="btn-bd" onclick="execBulkDel()" class="btn btn-sm btn-danger" style="display:none"><span translate="no" class="material-symbols-rounded notranslate">delete</span>Elimina <span id="bn-d">0</span></button>
         <div class="tb-div"></div>
-        <button onclick="resetFilters()" class="btn btn-ghost btn-sm"><span class="material-symbols-rounded">filter_alt_off</span>Reset</button>
-        <button onclick="openEM()" class="btn btn-primary btn-sm"><span class="material-symbols-rounded">download</span>Prima Nota</button>
+        <button onclick="resetFilters()" class="btn btn-ghost btn-sm"><span translate="no" class="material-symbols-rounded notranslate">filter_alt_off</span>Reset</button>
+        <button onclick="openEM()" class="btn btn-primary btn-sm"><span translate="no" class="material-symbols-rounded notranslate">download</span>Prima Nota</button>
       </div>
     </div>
 
@@ -1352,22 +1352,22 @@ tbody tr:hover td{background:#f8fafc!important}
         <div class="vscroll">
           <div class="kpi-grid">
             <div class="kpi kpi-e">
-              <div class="kpi-label"><span class="material-symbols-rounded" style="color:var(--pos)">trending_up</span> Entrate totali</div>
+              <div class="kpi-label"><span translate="no" class="material-symbols-rounded notranslate" style="color:var(--pos)">trending_up</span> Entrate totali</div>
               <div class="kpi-value" id="kpi-e">€ 0,00</div>
               <div class="kpi-foot" id="kf-e"></div><div class="kpi-spark" id="ks-e"></div>
             </div>
             <div class="kpi kpi-u">
-              <div class="kpi-label"><span class="material-symbols-rounded" style="color:var(--neg)">trending_down</span> Uscite totali</div>
+              <div class="kpi-label"><span translate="no" class="material-symbols-rounded notranslate" style="color:var(--neg)">trending_down</span> Uscite totali</div>
               <div class="kpi-value" id="kpi-u">€ 0,00</div>
               <div class="kpi-foot" id="kf-u"></div><div class="kpi-spark" id="ks-u"></div>
             </div>
             <div class="kpi kpi-s">
-              <div class="kpi-label"><span class="material-symbols-rounded" style="color:var(--brand)">account_balance_wallet</span> Saldo netto</div>
+              <div class="kpi-label"><span translate="no" class="material-symbols-rounded notranslate" style="color:var(--brand)">account_balance_wallet</span> Saldo netto</div>
               <div class="kpi-value" id="kpi-s">€ 0,00</div>
               <div class="kpi-foot" id="kf-s"></div><div class="kpi-spark" id="ks-s"></div>
             </div>
             <div class="kpi kpi-m">
-              <div class="kpi-label"><span class="material-symbols-rounded" style="color:var(--warn)">percent</span> Margine operativo</div>
+              <div class="kpi-label"><span translate="no" class="material-symbols-rounded notranslate" style="color:var(--warn)">percent</span> Margine operativo</div>
               <div class="kpi-value" id="kpi-m">0.00%</div>
               <div class="kpi-foot" id="kf-m"></div><div class="kpi-spark" id="ks-m"></div>
             </div>
@@ -1376,13 +1376,13 @@ tbody tr:hover td{background:#f8fafc!important}
           <div class="ins-grid" id="ins"></div>
 
           <div class="card" id="saldi-card" style="margin-bottom:20px;display:none">
-            <div class="card-hd"><div class="card-ttl"><span class="material-symbols-rounded">account_balance</span>Saldi bancari<span class="card-tag">da estratto conto</span></div>
-              <div class="sb-help" title="Saldo da movimenti = saldo iniziale dell'estratto + tutti i movimenti del conto nel foglio fino alla data del saldo finale. Se coincide con il saldo dell'estratto, il conto quadra.">Come si calcola<span class="material-symbols-rounded">info</span></div></div>
+            <div class="card-hd"><div class="card-ttl"><span translate="no" class="material-symbols-rounded notranslate">account_balance</span>Saldi bancari<span class="card-tag">da estratto conto</span></div>
+              <div class="sb-help" title="Saldo da movimenti = saldo iniziale dell'estratto + tutti i movimenti del conto nel foglio fino alla data del saldo finale. Se coincide con il saldo dell'estratto, il conto quadra.">Come si calcola<span translate="no" class="material-symbols-rounded notranslate">info</span></div></div>
             <div class="card-body"><div class="sb-grid" id="saldi"></div></div>
           </div>
 
           <div class="card" id="cm-card" style="margin-bottom:20px">
-            <div class="card-hd"><div class="card-ttl"><span class="material-symbols-rounded">calendar_month</span>Entrate e uscite per conto<span class="card-tag" id="cm-tag">Mensile</span></div>
+            <div class="card-hd"><div class="card-ttl"><span translate="no" class="material-symbols-rounded notranslate">calendar_month</span>Entrate e uscite per conto<span class="card-tag" id="cm-tag">Mensile</span></div>
               <select id="cm-acc" class="inp" style="min-width:200px;max-width:100%" onchange="renderContoMesi()"></select></div>
             <div class="card-body" style="padding-top:4px"><div class="cm-wrap" id="cm-tab"></div></div>
           </div>
@@ -1390,7 +1390,7 @@ tbody tr:hover td{background:#f8fafc!important}
           <div style="display:grid;grid-template-columns:3fr 2fr;gap:20px;margin-bottom:20px">
             <div class="card">
               <div class="card-hd">
-                <div class="card-ttl"><span class="material-symbols-rounded">bar_chart</span>Entrate vs Uscite<span class="card-tag">Mensile</span></div>
+                <div class="card-ttl"><span translate="no" class="material-symbols-rounded notranslate">bar_chart</span>Entrate vs Uscite<span class="card-tag">Mensile</span></div>
                 <div style="display:flex;gap:16px">
                   <span style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:3px;background:var(--c-ent);display:inline-block"></span>Entrate</span>
                   <span style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:3px;background:var(--c-usc);display:inline-block"></span>Uscite</span>
@@ -1399,8 +1399,8 @@ tbody tr:hover td{background:#f8fafc!important}
               <div class="card-body" style="height:300px;"><div style="position:relative;height:100%"><canvas id="ch-bar"></canvas></div></div>
             </div>
             <div class="card">
-              <div class="card-hd"><div class="card-ttl"><span class="material-symbols-rounded">donut_small</span>Uscite per categoria<span class="card-tag">Breakdown</span></div>
-                <button class="btn btn-ghost btn-sm" onclick="openPieModal()" title="Espandi" style="padding:6px 8px;margin-left:auto"><span class="material-symbols-rounded">open_in_full</span></button>
+              <div class="card-hd"><div class="card-ttl"><span translate="no" class="material-symbols-rounded notranslate">donut_small</span>Uscite per categoria<span class="card-tag">Breakdown</span></div>
+                <button class="btn btn-ghost btn-sm" onclick="openPieModal()" title="Espandi" style="padding:6px 8px;margin-left:auto"><span translate="no" class="material-symbols-rounded notranslate">open_in_full</span></button>
               </div>
               <div class="card-body pie-body">
                 <div class="pie-cv"><canvas id="ch-pie"></canvas><div class="pie-center"><div class="pc-l">Totale uscite</div><div class="pc-v" id="pie-tot">€ 0</div></div></div>
@@ -1411,11 +1411,11 @@ tbody tr:hover td{background:#f8fafc!important}
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px">
             <div class="card card-fill">
-              <div class="card-hd"><div class="card-ttl"><span class="material-symbols-rounded">show_chart</span>Saldo mensile<span class="card-tag">e margine %</span></div><div class="lg"><span><i style="background:#34b38a"></i>Positivo</span><span><i style="background:#e5484d"></i>Negativo</span><span><i class="lg-dash"></i>Margine</span></div></div>
+              <div class="card-hd"><div class="card-ttl"><span translate="no" class="material-symbols-rounded notranslate">show_chart</span>Saldo mensile<span class="card-tag">e margine %</span></div><div class="lg"><span><i style="background:#34b38a"></i>Positivo</span><span><i style="background:#e5484d"></i>Negativo</span><span><i class="lg-dash"></i>Margine</span></div></div>
               <div class="card-body"><div style="position:relative;height:100%"><canvas id="ch-line"></canvas></div></div>
             </div>
             <div class="card">
-              <div class="card-hd"><div class="card-ttl"><span class="material-symbols-rounded">sort</span>Top 10 Categorie<span class="card-tag">Uscite</span></div></div>
+              <div class="card-hd"><div class="card-ttl"><span translate="no" class="material-symbols-rounded notranslate">sort</span>Top 10 Categorie<span class="card-tag">Uscite</span></div></div>
               <div class="card-body"><div id="top10" style="display:flex;flex-direction:column;gap:10px"></div></div>
             </div>
           </div>
@@ -1423,13 +1423,13 @@ tbody tr:hover td{background:#f8fafc!important}
           <!-- ============= MATRICE PRO ============= -->
           <div class="card card-mx" style="margin-bottom:40px">
             <div class="card-hd card-hd-mx">
-              <div class="card-ttl"><span class="material-symbols-rounded">grid_on</span>Matrice Analitica Cash Flow<span class="card-tag" id="mx-tag">0 categorie</span></div>
+              <div class="card-ttl"><span translate="no" class="material-symbols-rounded notranslate">grid_on</span>Matrice Analitica Cash Flow<span class="card-tag" id="mx-tag">0 categorie</span></div>
               <div class="mx-toolbar">
                 <div class="mx-search">
-                  <span class="material-symbols-rounded">search</span>
+                  <span translate="no" class="material-symbols-rounded notranslate">search</span>
                   <input type="text" id="mx-search" placeholder="Cerca categoria..." oninput="renderMatrix(MXD,MXM)">
                 </div>
-                <button onclick="exportMatrix()" class="btn btn-gold btn-sm"><span class="material-symbols-rounded">table_chart</span>Esporta</button>
+                <button onclick="exportMatrix()" class="btn btn-gold btn-sm"><span translate="no" class="material-symbols-rounded notranslate">table_chart</span>Esporta</button>
               </div>
             </div>
             <div id="mx"></div>
@@ -1446,12 +1446,12 @@ tbody tr:hover td{background:#f8fafc!important}
               <div class="tab" onclick="setTipo('USCITE',this)">Uscite</div>
             </div>
             <div style="display:flex;gap:8px;align-items:center">
-              <span class="chip-dv" id="chip-dv" style="display:none" onclick="onlyDaVerificare()" title="Mostra solo i movimenti da verificare"><span class="material-symbols-rounded">pending</span><span id="chip-dv-n">0</span> da verificare</span>
+              <span class="chip-dv" id="chip-dv" style="display:none" onclick="onlyDaVerificare()" title="Mostra solo i movimenti da verificare"><span translate="no" class="material-symbols-rounded notranslate">pending</span><span id="chip-dv-n">0</span> da verificare</span>
               <div class="rcount" id="rcount">0 transazioni</div>
             </div>
           </div>
           <div class="fbar">
-            <div class="sbox"><span class="material-symbols-rounded">search</span><input type="text" id="sq" oninput="hSrch()" placeholder="Cerca descrizione, conto, categoria, n° fattura, nota o importo..."><span class="sclear material-symbols-rounded" onclick="clrS()">close</span></div>
+            <div class="sbox"><span translate="no" class="material-symbols-rounded notranslate">search</span><input type="text" id="sq" oninput="hSrch()" placeholder="Cerca descrizione, conto, categoria, n° fattura, nota o importo..."><span translate="no" class="sclear material-symbols-rounded notranslate" onclick="clrS()">close</span></div>
             <div class="drange"><span class="dlbl">Dal</span><input type="date" id="ds" onchange="renderConti()"><span class="dsep">→</span><span class="dlbl">Al</span><input type="date" id="de" onchange="renderConti()"></div>
             <select id="acc-f" onchange="renderConti()" class="inp"></select>
           </div>
@@ -1464,9 +1464,9 @@ tbody tr:hover td{background:#f8fafc!important}
                 <th style="text-align:left;width:40px;padding-left:16px"><input type="checkbox" id="mcb" onclick="togAll(this)"></th>
                 <th style="text-align:left">Data</th>
                 <th style="text-align:left">Descrizione / Conto</th>
-                <th onclick="openEF(event,'m')" style="cursor:pointer"><span style="display:inline-flex;align-items:center;gap:4px;justify-content:flex-end">Importo <span id="efi-m" class="material-symbols-rounded" style="font-size:14px">filter_alt</span></span></th>
+                <th onclick="openEF(event,'m')" style="cursor:pointer"><span style="display:inline-flex;align-items:center;gap:4px;justify-content:flex-end">Importo <span id="efi-m" translate="no" class="material-symbols-rounded notranslate" style="font-size:14px">filter_alt</span></span></th>
                 <th style="text-align:center">Categoria</th>
-                <th onclick="openEF(event,'ok')" style="cursor:pointer;text-align:center"><span style="display:inline-flex;align-items:center;gap:4px">Stato <span id="efi-ok" class="material-symbols-rounded" style="font-size:14px">filter_alt</span></span></th>
+                <th onclick="openEF(event,'ok')" style="cursor:pointer;text-align:center"><span style="display:inline-flex;align-items:center;gap:4px">Stato <span id="efi-ok" translate="no" class="material-symbols-rounded notranslate" style="font-size:14px">filter_alt</span></span></th>
               </tr>
             </thead>
             <tbody id="ctbody"></tbody>
@@ -1479,7 +1479,7 @@ tbody tr:hover td{background:#f8fafc!important}
 
 <div id="panel">
   <div class="pnl-hd">
-    <div class="pnl-ey"><span id="pnl-ey">Dettaglio</span><button onclick="closePanel()" class="btn btn-ghost btn-xs" style="padding:4px"><span class="material-symbols-rounded">close</span></button></div>
+    <div class="pnl-ey"><span id="pnl-ey">Dettaglio</span><button onclick="closePanel()" class="btn btn-ghost btn-xs" style="padding:4px"><span translate="no" class="material-symbols-rounded notranslate">close</span></button></div>
     <div class="pnl-amt" id="pnl-amt">€ 0,00</div>
     <div class="pnl-meta" id="pnl-meta"></div>
   </div>
@@ -1532,7 +1532,7 @@ function loginErr(msg){
 function resetLoginBtn(){
   const btn=document.getElementById('login-btn');
   btn.disabled=false;
-  btn.innerHTML='<span>Accedi</span><span class="material-symbols-rounded">arrow_forward</span>';
+  btn.innerHTML='<span>Accedi</span><span translate="no" class="material-symbols-rounded notranslate">arrow_forward</span>';
 }
 function doLogin(){
   const u=document.getElementById('login-user').value.trim().toUpperCase();
@@ -1542,7 +1542,7 @@ function doLogin(){
   if(u!==VALID_USER){loginErr('Utente o password non corretti');return;}
   document.getElementById('login-err').style.display='none';
   btn.disabled=true;
-  btn.innerHTML='<span class="material-symbols-rounded spin">progress_activity</span><span>Verifica in corso...</span>';
+  btn.innerHTML='<span translate="no" class="material-symbols-rounded spin notranslate">progress_activity</span><span>Verifica in corso...</span>';
   // La password viene verificata dal backend: se è giusta riceviamo subito i dati.
   api('getDashboardData',[],p).then(d=>{
     setKey(p);
@@ -1585,7 +1585,7 @@ function doLogout(){
   document.getElementById('login-err').style.display='none';
   const btn=document.getElementById('login-btn');
   btn.disabled=false;
-  btn.innerHTML='<span>Accedi</span><span class="material-symbols-rounded">arrow_forward</span>';
+  btn.innerHTML='<span>Accedi</span><span translate="no" class="material-symbols-rounded notranslate">arrow_forward</span>';
   document.getElementById('login-user').focus();
 }
 
@@ -1619,7 +1619,7 @@ function toast(msg,type){
   if(!box){box=document.createElement('div');box.id='toasts';document.body.appendChild(box);}
   const t=document.createElement('div');t.className='toast '+(type||'');
   const ico=type==='ok'?'check_circle':type==='err'?'error':'info';
-  t.innerHTML=`<span class="material-symbols-rounded">${ico}</span><span>${esc(msg)}</span>`;
+  t.innerHTML=`<span translate="no" class="material-symbols-rounded notranslate">${ico}</span><span>${esc(msg)}</span>`;
   box.appendChild(t);
   setTimeout(()=>{t.style.transition='opacity .3s';t.style.opacity='0';setTimeout(()=>t.remove(),300);},type==='err'?6000:2500);
 }
@@ -1754,7 +1754,7 @@ function renderKpiExtra(f,months,m,a,cur){
 /* In evidenza: tre letture automatiche del periodo + cosa resta da sistemare */
 function renderInsights(f,months,m,a){
   const el=document.getElementById('ins');if(!el)return;
-  const card=(ico,tone,lbl,val,sub,act)=>`<div class="ins ${act?'ins-act':''}" ${act?`onclick="${act}"`:''}><span class="ins-ic ${tone}"><span class="material-symbols-rounded">${ico}</span></span><div class="ins-tx"><div class="ins-l">${lbl}</div><div class="ins-v">${val}</div><div class="ins-s">${sub}</div></div>${act?'<span class="material-symbols-rounded ins-go">chevron_right</span>':''}</div>`;
+  const card=(ico,tone,lbl,val,sub,act)=>`<div class="ins ${act?'ins-act':''}" ${act?`onclick="${act}"`:''}><span class="ins-ic ${tone}"><span translate="no" class="material-symbols-rounded notranslate">${ico}</span></span><div class="ins-tx"><div class="ins-l">${lbl}</div><div class="ins-v">${val}</div><div class="ins-s">${sub}</div></div>${act?'<span translate="no" class="material-symbols-rounded ins-go notranslate">chevron_right</span>':''}</div>`;
   const out=[];const cp=curP();
   // Mese migliore (saldo), escluso il mese in corso se ce ne sono altri
   const full=months.filter(p=>p!==cp);const cand=full.length?full:months;
@@ -1802,10 +1802,10 @@ function renderSaldi(){
       const inP=mv.filter(x=>x.k>ini.k&&x.k<=fin.k),calc=ini.saldo+inP.reduce((t,x)=>t+sgn(x.r),0),diff=Math.round((calc-fin.saldo)*100)/100;
       rows.push(`<div class="sb-r"><span>Movimenti nel foglio (${inP.length.toLocaleString('it-IT')})</span><b class="${cls(calc-ini.saldo).trim()}">${(calc-ini.saldo>=0?'+':'')+fmt(calc-ini.saldo)}</b></div>`);
       rows.push(`<div class="sb-r"><span>Saldo da movimenti</span><b class="${cls(calc).trim()}">${fmt(calc)}</b></div>`);
-      if(Math.abs(diff)<0.005)chip='<span class="sb-chip sb-ok"><span class="material-symbols-rounded">check_circle</span>Quadra</span>';
-      else{chip='<span class="sb-chip sb-ko"><span class="material-symbols-rounded">error</span>Non quadra</span>';
+      if(Math.abs(diff)<0.005)chip='<span class="sb-chip sb-ok"><span translate="no" class="material-symbols-rounded notranslate">check_circle</span>Quadra</span>';
+      else{chip='<span class="sb-chip sb-ko"><span translate="no" class="material-symbols-rounded notranslate">error</span>Non quadra</span>';
         note=`<div class="sb-note">Differenza di <b>${fmt(Math.abs(diff))}</b>: nel foglio ${diff<0?'mancano entrate o ci sono uscite in più':'ci sono entrate in più o mancano uscite'} rispetto all'estratto.</div>`;}
-    }else chip='<span class="sb-chip sb-na"><span class="material-symbols-rounded">help</span>Manca saldo iniziale</span>';
+    }else chip='<span class="sb-chip sb-na"><span translate="no" class="material-symbols-rounded notranslate">help</span>Manca saldo iniziale</span>';
     // Disponibile oggi = ultimo saldo dell'estratto + movimenti registrati dopo quella data
     const after=mv.filter(x=>x.k>fin.k),now=fin.saldo+after.reduce((t,x)=>t+sgn(x.r),0),nowK=after.reduce((m,x)=>x.k>m?x.k:m,fin.k);
     tot+=now;dates.push(nowK);
@@ -1813,7 +1813,7 @@ function renderSaldi(){
       (after.length?`<div class="sb-r"><span>Movimenti dopo l'estratto (${after.length})</span><b class="${cls(now-fin.saldo).trim()}">${(now-fin.saldo>=0?'+':'')+fmt(now-fin.saldo)}</b></div>`:'')+
       `<div class="sb-sep">Verifica con l'estratto</div>`);
     const tip=esc([fin.fonte,ini&&ini!==fin?ini.fonte:''].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).join(' · '));
-    return `<div class="sb"><div class="sb-hd"><span class="ins-ic i-brand"><span class="material-symbols-rounded">account_balance</span></span><div style="min-width:0"><div class="sb-nm">${esc(bankName(acc))}</div><div class="sb-ac" title="${esc(acc)}">${esc((acc.match(/(\d{3,})\s*$/)||[])[1]?'Conto *'+acc.match(/(\d{3,})\s*$/)[1]:acc)}</div></div>${chip}</div>
+    return `<div class="sb"><div class="sb-hd"><span class="ins-ic i-brand"><span translate="no" class="material-symbols-rounded notranslate">account_balance</span></span><div style="min-width:0"><div class="sb-nm">${esc(bankName(acc))}</div><div class="sb-ac" title="${esc(acc)}">${esc((acc.match(/(\d{3,})\s*$/)||[])[1]?'Conto *'+acc.match(/(\d{3,})\s*$/)[1]:acc)}</div></div>${chip}</div>
       <div title="${tip}"><div class="sb-l">Disponibile al ${fd(nowK)}</div><div class="sb-v${cls(now)}">${fmt(now)}</div></div>
       <div class="sb-rows">${rows.join('')}</div>${note}</div>`;
   });
@@ -1856,7 +1856,7 @@ function switchView(v,el){
   document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');el.classList.add('active');
   const ico={cashflow:'area_chart',conti:'receipt_long'},lbl={cashflow:'Cash Flow',conti:'Transazioni'};
-  document.getElementById('pg-title').innerHTML=`<span class="material-symbols-rounded">${ico[v]}</span>${lbl[v]}`;
+  document.getElementById('pg-title').innerHTML=`<span translate="no" class="material-symbols-rounded notranslate">${ico[v]}</span>${lbl[v]}`;
   document.getElementById('tr-cf').style.display=v==='cashflow'?'flex':'none';
   document.getElementById('tr-kt').style.display=v==='conti'?'flex':'none';
   // Hide matrix floater when leaving cashflow; re-evaluate on enter
@@ -1913,7 +1913,7 @@ function updTags(){
   if(EF.ok.length)tags.push({l:`Stato: ${EF.ok.join(' / ')}`,k:'ok'});
   const q=document.getElementById('sq').value.trim();if(q)tags.push({l:`"${q}"`,k:'q'});
   b.style.display=tags.length?'flex':'none';
-  b.innerHTML=tags.map(t=>`<span class="ftag" onclick="rmTag('${t.k}')">${t.l}<span class="material-symbols-rounded">close</span></span>`).join('');
+  b.innerHTML=tags.map(t=>`<span class="ftag" onclick="rmTag('${t.k}')">${t.l}<span translate="no" class="material-symbols-rounded notranslate">close</span></span>`).join('');
 }
 function rmTag(k){if(k==='q')document.getElementById('sq').value='';else{EF[k]=[];const ic=document.getElementById(`efi-${k}`);if(ic){ic.style.color='';ic.innerText='filter_alt';}}renderConti();updTags();}
 function clrS(){document.getElementById('sq').value='';renderConti();updTags();}
@@ -1924,11 +1924,11 @@ function renderCS(){
   const q=document.getElementById('set-q').value.toLowerCase();
   document.getElementById('cs-list').innerHTML=CATS.filter(c=>c.name.toLowerCase().includes(q)).map(c=>{
     const s=c.name.replace(/'/g,"\\'");
-    return`<div class="cat-row"><div style="display:flex;align-items:center;gap:12px"><div style="width:12px;height:12px;border-radius:50%;background:${c.color};flex-shrink:0"></div><span style="font-size:14px;font-weight:500;color:var(--ink)">${c.name}</span></div><div style="display:flex;gap:6px"><button onclick="editCS('${s}','${c.color}')" class="btn btn-ghost btn-xs" style="padding:4px"><span class="material-symbols-rounded" style="font-size:16px">edit</span></button><button onclick="delCM('${s}')" class="btn btn-danger btn-xs" style="padding:4px"><span class="material-symbols-rounded" style="font-size:16px">delete</span></button></div></div>`;
+    return`<div class="cat-row"><div style="display:flex;align-items:center;gap:12px"><div style="width:12px;height:12px;border-radius:50%;background:${c.color};flex-shrink:0"></div><span style="font-size:14px;font-weight:500;color:var(--ink)">${c.name}</span></div><div style="display:flex;gap:6px"><button onclick="editCS('${s}','${c.color}')" class="btn btn-ghost btn-xs" style="padding:4px"><span translate="no" class="material-symbols-rounded notranslate" style="font-size:16px">edit</span></button><button onclick="delCM('${s}')" class="btn btn-danger btn-xs" style="padding:4px"><span translate="no" class="material-symbols-rounded notranslate" style="font-size:16px">delete</span></button></div></div>`;
   }).join('');
 }
-function resetCF(){EOLD=null;document.getElementById('nc-name').value='';document.getElementById('nc-col').value='#2563eb';const b=document.getElementById('btn-ac');b.innerHTML='<span class="material-symbols-rounded">add</span>Aggiungi';b.className='btn btn-primary btn-sm';}
-function editCS(n,col){document.getElementById('nc-name').value=n;document.getElementById('nc-col').value=col;EOLD=n;const b=document.getElementById('btn-ac');b.innerHTML='<span class="material-symbols-rounded">save</span>Salva';b.className='btn btn-success btn-sm';}
+function resetCF(){EOLD=null;document.getElementById('nc-name').value='';document.getElementById('nc-col').value='#2563eb';const b=document.getElementById('btn-ac');b.innerHTML='<span translate="no" class="material-symbols-rounded notranslate">add</span>Aggiungi';b.className='btn btn-primary btn-sm';}
+function editCS(n,col){document.getElementById('nc-name').value=n;document.getElementById('nc-col').value=col;EOLD=n;const b=document.getElementById('btn-ac');b.innerHTML='<span translate="no" class="material-symbols-rounded notranslate">save</span>Salva';b.className='btn btn-success btn-sm';}
 function saveCM(){
   const v=document.getElementById('nc-name').value.trim(),col=document.getElementById('nc-col').value;if(!v)return;
   if(EOLD){
@@ -2038,7 +2038,7 @@ function variationPill(curr, prev){
 function renderMatrix(mx, months){
   const w=document.getElementById('mx');
   if(!months.length){
-    w.innerHTML='<div class="empty-st"><span class="material-symbols-rounded">inbox</span><p>Nessun dato per il periodo selezionato.</p></div>';
+    w.innerHTML='<div class="empty-st"><span translate="no" class="material-symbols-rounded notranslate">inbox</span><p>Nessun dato per il periodo selezionato.</p></div>';
     document.getElementById('mx-tag').innerText='0 categorie';
     return;
   }
@@ -2072,8 +2072,8 @@ function renderMatrix(mx, months){
     h+=`<tr class="mx-${t==='ENTRATE'?'ent':'usc'} ${collapsed?'mx-coll':''}" onclick="toggleSection('${t}')">
       <td>
         <div class="sec-tog">
-          <span class="material-symbols-rounded chev">expand_more</span>
-          <span class="material-symbols-rounded" style="font-size:16px">${ico}</span>
+          <span translate="no" class="material-symbols-rounded chev notranslate">expand_more</span>
+          <span translate="no" class="material-symbols-rounded notranslate" style="font-size:16px">${ico}</span>
           <span>${t}</span>
           <span style="margin-left:auto;font-weight:500;opacity:0.7">${cats.length} cat.</span>
         </div>
@@ -2119,7 +2119,7 @@ function renderMatrix(mx, months){
   const sf=totEnt-totUsc;
   
   // Saldo Mensile
-  h+=`<tr class="mx-saldo"><td><span style="display:inline-flex;align-items:center;gap:6px"><span class="material-symbols-rounded" style="font-size:16px">account_balance_wallet</span>Saldo Mensile</span></td>`;
+  h+=`<tr class="mx-saldo"><td><span style="display:inline-flex;align-items:center;gap:6px"><span translate="no" class="material-symbols-rounded notranslate" style="font-size:16px">account_balance_wallet</span>Saldo Mensile</span></td>`;
   monthlySaldo.forEach((v,i)=>{
     const prev=i>0?monthlySaldo[i-1]:0;
     h+=`<td class="mxn" style="color:${v>=0?'var(--brand-d)':'var(--neg-text)'}!important;font-weight:700">${fmt(v)}${i>0?variationPill(v,prev):''}</td>`;
@@ -2128,7 +2128,7 @@ function renderMatrix(mx, months){
   h+=`<td class="mx-spark">${buildSparkline(monthlySaldo,'#2563eb')}</td></tr>`;
   
   // Saldo Cumulato
-  h+=`<tr class="mx-cumul"><td><span style="display:inline-flex;align-items:center;gap:6px"><span class="material-symbols-rounded" style="font-size:16px">stacked_line_chart</span>Saldo Cumulato</span></td>`;
+  h+=`<tr class="mx-cumul"><td><span style="display:inline-flex;align-items:center;gap:6px"><span translate="no" class="material-symbols-rounded notranslate" style="font-size:16px">stacked_line_chart</span>Saldo Cumulato</span></td>`;
   cumSaldo.forEach(v=>{
     h+=`<td class="mxn" style="color:${v>=0?'var(--brand-d)':'var(--neg-text)'}!important">${fmt(v)}</td>`;
   });
@@ -2136,7 +2136,7 @@ function renderMatrix(mx, months){
   h+=`<td class="mx-spark">${buildSparkline(cumSaldo,'#60a5fa')}</td></tr>`;
   
   // Margine Operativo %
-  h+=`<tr class="mx-marg"><td><span style="display:inline-flex;align-items:center;gap:6px"><span class="material-symbols-rounded" style="font-size:16px">percent</span>Margine Operativo</span></td>`;
+  h+=`<tr class="mx-marg"><td><span style="display:inline-flex;align-items:center;gap:6px"><span translate="no" class="material-symbols-rounded notranslate" style="font-size:16px">percent</span>Margine Operativo</span></td>`;
   const margins=[];
   months.forEach(m=>{
     const e=Object.values(mx.ENTRATE).reduce((s,c)=>s+(c.vals[m]||0),0);
@@ -2345,7 +2345,7 @@ function renderPieModal(){
       <span style="font-family:'Inter',system-ui,sans-serif;font-size:11.5px;font-weight:600;color:var(--ink4);flex-shrink:0">${fmt(v)}</span>
       <span style="font-size:11px;font-weight:700;color:var(--brand-d);flex-shrink:0;background:var(--brand-lt);padding:2px 6px;border-radius:4px;min-width:46px;text-align:center">${p}%</span>
     </div>`;
-  }).join(''):`<div class="empty-st" style="padding:30px"><span class="material-symbols-rounded">inbox</span><p>Nessun dato per i filtri selezionati.</p></div>`;
+  }).join(''):`<div class="empty-st" style="padding:30px"><span translate="no" class="material-symbols-rounded notranslate">inbox</span><p>Nessun dato per i filtri selezionati.</p></div>`;
   // Pie chart
   if(CH.pieX)CH.pieX.destroy();
   if(!entries.length){CH.pieX=null;return;}
@@ -2417,8 +2417,8 @@ function renderConti(keepLimit){
     let dh='';
     if(r.dt!==lastDay){lastDay=r.dt;const t=dayTot[r.dt];
       dh=`<tr class="day-row"><td colspan="6"><span class="day-l">${esc(dayLabel(r))}</span><span class="day-t">${t.n} mov.${t.e?` · <b class="ap">+${fmt(t.e)}</b>`:''}${t.u?` · <b class="an">−${fmt(t.u)}</b>`:''}</span></td></tr>`;}
-    const doc=r.docRic?`<span class="doc"><span class="material-symbols-rounded">receipt</span>${esc(r.docRic)}</span>`:'';
-    const att=r.docUrl?`<span class="doc" title="Documento allegato"><span class="material-symbols-rounded">attach_file</span>PDF</span>`:'';
+    const doc=r.docRic?`<span class="doc"><span translate="no" class="material-symbols-rounded notranslate">receipt</span>${esc(r.docRic)}</span>`:'';
+    const att=r.docUrl?`<span class="doc" title="Documento allegato"><span translate="no" class="material-symbols-rounded notranslate">attach_file</span>PDF</span>`:'';
     return dh+`<tr>
       <td style="text-align:left;padding-left:16px;width:40px" onclick="event.stopPropagation()"><input type="checkbox" class="rcb" data-idx="${idx}" onclick="updBulk()"></td>
       <td style="text-align:left;cursor:pointer" onclick="openRD(${idx})"><span class="c-date">${esc(r.dt)}</span></td>
@@ -2428,10 +2428,10 @@ function renderConti(keepLimit){
       </td>
       <td onclick="openRD(${idx})" style="cursor:pointer"><span class="${r.t==='ENTRATE'?'ap':'an'}">${r.t==='ENTRATE'?'+':'−'}${fmt(r.m)}</span></td>
       <td style="text-align:center"><span onclick="openCatMenu(event,${idx})" class="cpill"><span class="cdot" style="background:${cv.hex}"></span>${esc(r.c)}</span></td>
-      <td style="text-align:center"><div class="toggle ${r.ok?'ok':'wait'}" title="${r.ok?'Ok':'Da verificare'}" onclick="event.stopPropagation();toggleRow(this,${idx})"><div class="toggle-knob"><span class="material-symbols-rounded" style="font-size:12px">${r.ok?'check':'close'}</span></div></div></td>
+      <td style="text-align:center"><div class="toggle ${r.ok?'ok':'wait'}" title="${r.ok?'Ok':'Da verificare'}" onclick="event.stopPropagation();toggleRow(this,${idx})"><div class="toggle-knob"><span translate="no" class="material-symbols-rounded notranslate" style="font-size:12px">${r.ok?'check':'close'}</span></div></div></td>
     </tr>`;
   }).join('');
-  if(f.length>shown)h+=`<tr class="more-row"><td colspan="6"><button class="btn btn-ghost btn-sm" onclick="showMore()"><span class="material-symbols-rounded">expand_more</span>Mostra altre ${Math.min(500,f.length-shown).toLocaleString('it-IT')}</button></td></tr>`;
+  if(f.length>shown)h+=`<tr class="more-row"><td colspan="6"><button class="btn btn-ghost btn-sm" onclick="showMore()"><span translate="no" class="material-symbols-rounded notranslate">expand_more</span>Mostra altre ${Math.min(500,f.length-shown).toLocaleString('it-IT')}</button></td></tr>`;
   document.getElementById('ctbody').innerHTML=h;
   updBulk();updDvChip();
 }
@@ -2459,8 +2459,8 @@ function openRD(idx){
   const ae=document.getElementById('pnl-amt');ae.innerText=(r.t==='ENTRATE'?'+':'−')+fmt(r.m);ae.className='pnl-amt '+(r.t==='ENTRATE'?'pos':'neg');
   document.getElementById('pnl-meta').innerText=`${r.dt} · ${r.acc}`;
   let ds='';
-  if(r.docUrl?.startsWith('http')){const pv=r.docUrl.replace(/\/view.*/,'/preview');ds=`<div class="pf"><label class="plbl">Documento</label><iframe src="${pv}" width="100%" height="200" style="border-radius:var(--r2);border:1px solid var(--bd);display:block;margin-bottom:10px"></iframe><div style="display:flex;gap:8px"><a href="${r.docUrl}" target="_blank" class="btn btn-sm" style="flex:1;justify-content:center"><span class="material-symbols-rounded">open_in_new</span>Apri</a><button onclick="document.getElementById('fi').click()" class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">Sostituisci</button><button onclick="delDoc(${idx})" class="btn btn-danger btn-sm" style="padding:6px 12px"><span class="material-symbols-rounded">delete</span></button></div></div>`;}
-  else{ds=`<div class="pf"><label class="plbl">Documento</label><div class="upzone" onclick="document.getElementById('fi').click()"><span class="material-symbols-rounded">upload_file</span><p id="up-h">Allega fattura o ricevuta</p><p style="font-size:12px;color:var(--ink5);margin-top:4px">PDF, immagini, Word, Excel</p></div></div>`;}
+  if(r.docUrl?.startsWith('http')){const pv=r.docUrl.replace(/\/view.*/,'/preview');ds=`<div class="pf"><label class="plbl">Documento</label><iframe src="${pv}" width="100%" height="200" style="border-radius:var(--r2);border:1px solid var(--bd);display:block;margin-bottom:10px"></iframe><div style="display:flex;gap:8px"><a href="${r.docUrl}" target="_blank" class="btn btn-sm" style="flex:1;justify-content:center"><span translate="no" class="material-symbols-rounded notranslate">open_in_new</span>Apri</a><button onclick="document.getElementById('fi').click()" class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">Sostituisci</button><button onclick="delDoc(${idx})" class="btn btn-danger btn-sm" style="padding:6px 12px"><span translate="no" class="material-symbols-rounded notranslate">delete</span></button></div></div>`;}
+  else{ds=`<div class="pf"><label class="plbl">Documento</label><div class="upzone" onclick="document.getElementById('fi').click()"><span translate="no" class="material-symbols-rounded notranslate">upload_file</span><p id="up-h">Allega fattura o ricevuta</p><p style="font-size:12px;color:var(--ink5);margin-top:4px">PDF, immagini, Word, Excel</p></div></div>`;}
   let nv='',dv='';const mx=(r.docRic||'').match(/n\.\s*(\S+)\s*del\s*([\d\/-]+)/i);if(mx){nv=mx[1]==='--'?'':mx[1];const q=mx[2].split(/[\/-]/);dv=q.length===3&&q[0].length===4?`${q[2]}/${q[1]}/${q[0]}`:'';}
   document.getElementById('pnl-body').innerHTML=`
     <dl class="pinfo">
@@ -2476,7 +2476,7 @@ function openRD(idx){
     ${ds}
     <div class="pf"><label class="plbl">Note</label><textarea id="p-nt" class="pinp ptarea" placeholder="Note interne...">${esc(r.note)}</textarea></div>
     <hr class="pdiv">
-    <button id="btn-sp" onclick="savePanel(${idx})" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;font-size:14px"><span class="material-symbols-rounded">save</span>Salva modifiche</button>`;
+    <button id="btn-sp" onclick="savePanel(${idx})" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;font-size:14px"><span translate="no" class="material-symbols-rounded notranslate">save</span>Salva modifiche</button>`;
   openPanel();
 }
 // gg/mm/aaaa: solo cifre e barre; '05072025' diventa '05/07/2025' uscendo dal campo
@@ -2485,16 +2485,16 @@ function openPanel(){document.getElementById('panel').classList.add('open');docu
 function closePanel(){document.getElementById('panel').classList.remove('open');document.getElementById('overlay').classList.remove('active');PIDX=-1;}
 function delDoc(idx){if(!confirm('Eliminare il documento da Drive?'))return;api('deleteFileFromDrive',[DB[idx].docUrl,DB[idx].sheetName,DB[idx].rowIdx]).then(()=>{DB[idx].docUrl='';openRD(idx);}).catch(e=>toast(e.message||e,'err'));}
 function savePanel(idx){
-  const btn=document.getElementById('btn-sp');btn.innerHTML='<span class="material-symbols-rounded spin">sync</span>Salvataggio...';btn.disabled=true;
+  const btn=document.getElementById('btn-sp');btn.innerHTML='<span translate="no" class="material-symbols-rounded spin notranslate">sync</span>Salvataggio...';btn.disabled=true;
   const nt=document.getElementById('p-nt').value,num=document.getElementById('p-dn').value.trim(),date=document.getElementById('p-dd').value;
   const dq=date.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if(date&&(!dq||+dq[1]<1||+dq[1]>31||+dq[2]<1||+dq[2]>12)){toast('Data fattura: usa il formato gg/mm/aaaa','err');btn.innerHTML='<span class="material-symbols-rounded">save</span>Salva modifiche';btn.disabled=false;return;}
+  if(date&&(!dq||+dq[1]<1||+dq[1]>31||+dq[2]<1||+dq[2]>12)){toast('Data fattura: usa il formato gg/mm/aaaa','err');btn.innerHTML='<span translate="no" class="material-symbols-rounded notranslate">save</span>Salva modifiche';btn.disabled=false;return;}
   const dIso=dq?`${dq[3]}/${dq[2].padStart(2,'0')}/${dq[1].padStart(2,'0')}`:'';
   let dr='';if(num||dIso)dr=`n. ${num||'--'} del ${dIso||'--/--/----'}`;
   DB[idx].note=nt;DB[idx].docRic=dr;
   api('updateRecord',[DB[idx].sheetName,DB[idx].rowIdx,DB[idx].c,DB[idx].ok,nt,dr])
-    .then(()=>{btn.innerHTML='<span class="material-symbols-rounded">check_circle</span>Salvato';btn.className='btn btn-success';btn.style.width='100%';btn.style.justifyContent='center';btn.disabled=false;setTimeout(()=>{closePanel();renderConti();applyFilter();},800);})
-    .catch(e=>{toast(e.message||e,'err');btn.innerHTML='<span class="material-symbols-rounded">save</span>Riprova';btn.disabled=false;});
+    .then(()=>{btn.innerHTML='<span translate="no" class="material-symbols-rounded notranslate">check_circle</span>Salvato';btn.className='btn btn-success';btn.style.width='100%';btn.style.justifyContent='center';btn.disabled=false;setTimeout(()=>{closePanel();renderConti();applyFilter();},800);})
+    .catch(e=>{toast(e.message||e,'err');btn.innerHTML='<span translate="no" class="material-symbols-rounded notranslate">save</span>Riprova';btn.disabled=false;});
 }
 document.getElementById('fi').addEventListener('change',function(e){
   if(PIDX===-1)return;const file=e.target.files[0];if(!file)return;
