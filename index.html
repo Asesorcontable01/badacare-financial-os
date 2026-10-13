@@ -694,7 +694,7 @@ input[type="password"]::-webkit-contacts-auto-fill-button{display:none!important
   /* Filters bar in conti */
   .fbar{flex-wrap:wrap!important;gap:8px!important}
   .fbar .sbox{min-width:0!important;flex:1 0 100%!important}
-  .fbar .drange{flex:1 1 100%!important;justify-content:space-between}
+  .fbar .drange,.fbar .rp-trig{flex:1 1 100%!important;justify-content:space-between}
   .fbar .inp,.fbar select{flex:1 1 calc(50% - 4px)!important;min-width:0!important}
   .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .tab{white-space:nowrap;flex-shrink:0;font-size:12px!important;padding:8px 14px!important}
@@ -1097,6 +1097,60 @@ tbody tr:hover td{background:#f8fafc!important}
 .sb-nm{white-space:normal;line-height:1.25}
 @media (prefers-reduced-motion:reduce){.card,.ins,.kpi{animation:none!important}}
 
+/* ── Range picker (v50) ── */
+.rp-trig{display:flex;align-items:center;gap:8px;height:38px;padding:0 12px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r2);box-shadow:var(--sh0);font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--ink2);cursor:pointer;white-space:nowrap;transition:all .2s ease;min-width:0}
+.rp-trig:hover{border-color:var(--bd2)}
+.rp-trig.open,.rp-trig:focus-visible{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.rp-trig .material-symbols-rounded{font-size:18px;color:var(--ink4)}
+.rp-trig .rp-lbl{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis}
+.rp-trig.has .rp-lbl{color:var(--ink);font-weight:600}
+.rp-trig .rp-x{display:none;font-size:16px;color:var(--ink5);border-radius:50%}
+.rp-trig.has .rp-x{display:inline-block}
+.rp-trig .rp-x:hover{color:var(--neg);background:var(--surf2)}
+.rp-trig.finp{width:100%}
+.rp-pop{position:fixed;z-index:10050;display:flex;background:#fff;border:1px solid var(--bd);border-radius:14px;box-shadow:0 20px 40px -12px rgba(15,23,42,.25),0 4px 10px rgba(15,23,42,.06);font-family:'Inter',system-ui,sans-serif;color:var(--ink2);overflow:hidden;animation:rpIn .14s ease}
+@keyframes rpIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.rp-pre{display:flex;flex-direction:column;gap:2px;padding:12px 8px;border-right:1px solid var(--bd);background:var(--surf2);min-width:150px}
+.rp-pre button{all:unset;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--ink3);cursor:pointer;white-space:nowrap}
+.rp-pre button:hover{background:#fff;color:var(--ink)}
+.rp-pre button.on{background:var(--brand);color:#fff;font-weight:600}
+.rp-main{display:flex;flex-direction:column}
+.rp-cals{display:flex;gap:24px;padding:14px 16px 6px}
+.rp-cal{width:252px}
+.rp-head{display:flex;align-items:center;justify-content:space-between;height:32px;margin-bottom:6px;font-size:14px;font-weight:700;color:var(--ink);text-transform:capitalize}
+.rp-nav{all:unset;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;color:var(--ink3)}
+.rp-nav:hover{background:var(--surf2)}
+.rp-nav.hid{visibility:hidden}
+.rp-grid{display:grid;grid-template-columns:repeat(7,36px);row-gap:2px}
+.rp-dow{height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--ink5);text-transform:uppercase}
+.rp-d{all:unset;height:36px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;position:relative;font-variant-numeric:tabular-nums}
+.rp-d span{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;position:relative;z-index:1}
+.rp-d:hover span{background:var(--surf2)}
+.rp-d.today span{box-shadow:inset 0 0 0 1px var(--brand-md);color:var(--brand-d);font-weight:600}
+.rp-d.in{background:var(--brand-lt)}
+.rp-d.s,.rp-d.e{background:var(--brand-lt)}
+.rp-d.s{border-radius:18px 0 0 18px}.rp-d.e{border-radius:0 18px 18px 0}.rp-d.s.e{border-radius:18px}
+.rp-d.s span,.rp-d.e span{background:var(--brand)!important;color:#fff!important;font-weight:700;box-shadow:none}
+.rp-d.prev.in,.rp-d.prev.e{background:#f1f5f9}
+.rp-foot{display:flex;align-items:center;gap:10px;padding:10px 16px;border-top:1px solid var(--bd)}
+.rp-sum{flex:1;font-size:12px;color:var(--ink4)}
+.rp-sum b{color:var(--ink);font-weight:600}
+.rp-btn{all:unset;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.rp-btn.gh{color:var(--ink3)}.rp-btn.gh:hover{background:var(--surf2)}
+.rp-btn.pr{background:var(--brand);color:#fff}.rp-btn.pr:hover{background:var(--brand-d)}
+.rp-btn.pr[disabled]{opacity:.4;pointer-events:none}
+.rp-bd{position:fixed;inset:0;z-index:10049;background:transparent}
+@media(max-width:640px){
+  .rp-bd{background:rgba(15,23,42,.35)}
+  .rp-pop{left:0!important;right:0;top:auto!important;bottom:0;border-radius:18px 18px 0 0;flex-direction:column;max-height:92vh;overflow:auto}
+  .rp-pre{flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--bd);min-width:0;padding:10px}
+  .rp-pre button{background:#fff;border:1px solid var(--bd);border-radius:999px;padding:6px 12px;font-size:12px}
+  .rp-cals{justify-content:center}
+  .rp-cal+.rp-cal{display:none}
+  .rp-cal{width:auto}
+  .rp-grid{grid-template-columns:repeat(7,minmax(38px,1fr))}
+  .rp-foot{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+}
 </style>
 </head>
 <body>
@@ -1188,15 +1242,10 @@ tbody tr:hover td{background:#f8fafc!important}
         <label class="flbl">Conto bancario</label>
         <select id="exp-conto" class="finp" onchange="updExpSummary()"></select>
       </div>
-      <div style="display:flex;gap:12px">
-        <div style="flex:1">
-          <label class="flbl">Dal</label>
-          <input type="date" id="exp-dal" class="finp" style="color-scheme:light" onchange="updExpSummary()">
-        </div>
-        <div style="flex:1">
-          <label class="flbl">Al</label>
-          <input type="date" id="exp-al" class="finp" style="color-scheme:light" onchange="updExpSummary()">
-        </div>
+      <div>
+        <label class="flbl">Periodo</label>
+        <input type="hidden" id="exp-dal"><input type="hidden" id="exp-al">
+        <button type="button" class="rp-trig finp" id="rp-exp" onclick="rpOpen('rp-exp')"><span translate="no" class="material-symbols-rounded notranslate">date_range</span><span class="rp-lbl">Tutte le date</span><span translate="no" class="rp-x material-symbols-rounded notranslate" onclick="rpClear('rp-exp',event)" title="Cancella date">close</span></button>
       </div>
       <div class="export-summary" id="exp-summary">
         <span translate="no" class="material-symbols-rounded notranslate">summarize</span>
@@ -1452,7 +1501,7 @@ tbody tr:hover td{background:#f8fafc!important}
           </div>
           <div class="fbar">
             <div class="sbox"><span translate="no" class="material-symbols-rounded notranslate">search</span><input type="text" id="sq" oninput="hSrch()" placeholder="Cerca descrizione, conto, categoria, n° fattura, nota o importo..."><span translate="no" class="sclear material-symbols-rounded notranslate" onclick="clrS()">close</span></div>
-            <div class="drange"><span class="dlbl">Dal</span><input type="date" id="ds" onchange="renderConti()"><span class="dsep">→</span><span class="dlbl">Al</span><input type="date" id="de" onchange="renderConti()"></div>
+            <input type="hidden" id="ds"><input type="hidden" id="de"><button type="button" class="rp-trig" id="rp-conti" onclick="rpOpen('rp-conti')"><span translate="no" class="material-symbols-rounded notranslate">date_range</span><span class="rp-lbl">Tutte le date</span><span translate="no" class="rp-x material-symbols-rounded notranslate" onclick="rpClear('rp-conti',event)" title="Cancella date">close</span></button>
             <select id="acc-f" onchange="renderConti()" class="inp"></select>
           </div>
           <div id="ftag-b" class="ftags" style="display:none"></div>
@@ -1613,6 +1662,111 @@ const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 // Data dei filtri in ora locale (new Date('aaaa-mm-gg') sarebbe mezzanotte UTC)
 const dayStart=v=>v?new Date(v+'T00:00:00').getTime():0;
 const dayEnd=v=>v?new Date(v+'T23:59:59').getTime():Infinity;
+// ── Range picker (v50): selettore moderno di intervallo date, sostituisce i calendari nativi ──
+const RP={};
+const RP_M=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+const RP_MS=['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+const rpIso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const rpParse=v=>v?new Date(v+'T00:00:00'):null;
+const rpTxt=v=>{const d=rpParse(v);return d?d.getDate()+' '+RP_MS[d.getMonth()]+' '+d.getFullYear():'';};
+function rpPresets(){
+  const t=new Date();t.setHours(0,0,0,0);const y=t.getFullYear(),m=t.getMonth();
+  const ago=n=>{const d=new Date(t);d.setDate(d.getDate()-n);return d;};
+  return [
+    ['Oggi',t,t],['Ultimi 7 giorni',ago(6),t],['Ultimi 30 giorni',ago(29),t],
+    ['Questo mese',new Date(y,m,1),new Date(y,m+1,0)],['Mese scorso',new Date(y,m-1,1),new Date(y,m,0)],
+    ['Ultimi 3 mesi',new Date(y,m-2,1),new Date(y,m+1,0)],
+    ["Quest'anno",new Date(y,0,1),new Date(y,11,31)],['Anno scorso',new Date(y-1,0,1),new Date(y-1,11,31)]
+  ].map(([l,a,b])=>({l,a:rpIso(a),b:rpIso(b)}));
+}
+// id: prefisso del trigger; sIn/eIn: id degli input nascosti che il resto del codice già legge
+function rpInit(id,sIn,eIn,onChange,placeholder){
+  RP[id]={sIn,eIn,onChange,ph:placeholder||'Tutte le date'};
+  rpSync(id);
+}
+function rpSync(id){
+  const o=RP[id],t=document.getElementById(id);if(!o||!t)return;
+  const s=document.getElementById(o.sIn).value,e=document.getElementById(o.eIn).value;
+  let l=o.ph;
+  if(s&&e)l=s===e?rpTxt(s):rpTxt(s)+' – '+rpTxt(e);else if(s)l='Dal '+rpTxt(s);else if(e)l='Fino al '+rpTxt(e);
+  const p=rpPresets().find(p=>p.a===s&&p.b===e);if(p)l=p.l+' · '+l;
+  t.querySelector('.rp-lbl').textContent=l;
+  t.classList.toggle('has',!!(s||e));
+}
+function rpSet(id,s,e){
+  const o=RP[id];document.getElementById(o.sIn).value=s||'';document.getElementById(o.eIn).value=e||'';
+  rpSync(id);if(o.onChange)o.onChange();
+}
+function rpClear(id,ev){if(ev)ev.stopPropagation();rpSet(id,'','');}
+function rpOpen(id){
+  rpClose();
+  const o=RP[id],t=document.getElementById(id);
+  const s=document.getElementById(o.sIn).value,e=document.getElementById(o.eIn).value;
+  const base=rpParse(e||s)||new Date();
+  // mostra il mese finale a destra: il primo calendario è il mese prima
+  const mob=window.innerWidth<=640;
+  const v=new Date(base.getFullYear(),base.getMonth()-(mob?0:1),1);
+  RP._={id,s,e,hov:null,view:v,picking:false};
+  const bd=document.createElement('div');bd.className='rp-bd';bd.onclick=rpClose;
+  const pop=document.createElement('div');pop.className='rp-pop';pop.setAttribute('translate','no');
+  pop.onclick=ev=>ev.stopPropagation();
+  document.body.append(bd,pop);RP._.pop=pop;RP._.bd=bd;
+  t.classList.add('open');
+  rpRender();
+  if(!mob){
+    const r=t.getBoundingClientRect(),pw=pop.offsetWidth,ph=pop.offsetHeight;
+    let left=Math.min(r.left,window.innerWidth-pw-12);left=Math.max(12,left);
+    let top=r.bottom+6;if(top+ph>window.innerHeight-12&&r.top-ph-6>12)top=r.top-ph-6;
+    pop.style.left=left+'px';pop.style.top=top+'px';
+  }
+  document.addEventListener('keydown',rpKey);
+}
+function rpKey(ev){if(ev.key==='Escape')rpClose();}
+function rpClose(){
+  const c=RP._;if(!c)return;
+  c.pop.remove();c.bd.remove();
+  const t=document.getElementById(c.id);if(t)t.classList.remove('open');
+  document.removeEventListener('keydown',rpKey);RP._=null;
+}
+function rpRender(){
+  const c=RP._;if(!c)return;
+  const mob=window.innerWidth<=640,n=mob?1:2;
+  const today=rpIso(new Date());
+  let a=c.s,b=c.e;
+  if(c.picking&&c.hov){a=c.s<=c.hov?c.s:c.hov;b=c.s<=c.hov?c.hov:c.s;}
+  const cals=[];
+  for(let k=0;k<n;k++){
+    const m0=new Date(c.view.getFullYear(),c.view.getMonth()+k,1),y=m0.getFullYear(),m=m0.getMonth();
+    const off=(m0.getDay()+6)%7,days=new Date(y,m+1,0).getDate();
+    let g=['L','M','M','G','V','S','D'].map(d=>`<div class="rp-dow">${d}</div>`).join('');
+    for(let i=0;i<off;i++)g+='<div></div>';
+    for(let d=1;d<=days;d++){
+      const iso=rpIso(new Date(y,m,d));let cl='rp-d';
+      if(iso===today)cl+=' today';
+      if(a&&b&&iso>a&&iso<b)cl+=' in';
+      if(iso===a)cl+=' s';if(iso===b)cl+=' e';
+      if(c.picking)cl+=' prev';
+      g+=`<button class="${cl}" data-d="${iso}" onclick="rpPick('${iso}')" onmouseenter="rpHover('${iso}')"><span>${d}</span></button>`;
+    }
+    cals.push(`<div class="rp-cal"><div class="rp-head"><button class="rp-nav${k===0?'':' hid'}" onclick="rpNav(-1)" aria-label="Mese precedente"><span class="material-symbols-rounded notranslate">chevron_left</span></button><span>${RP_M[m]} ${y}</span><button class="rp-nav${k===n-1?'':' hid'}" onclick="rpNav(1)" aria-label="Mese successivo"><span class="material-symbols-rounded notranslate">chevron_right</span></button></div><div class="rp-grid">${g}</div></div>`);
+  }
+  const pres=rpPresets().map(p=>`<button class="${p.a===c.s&&p.b===c.e&&!c.picking?'on':''}" onclick="rpPreset('${p.a}','${p.b}')">${p.l}</button>`).join('');
+  let sum='Scegli la data di inizio';
+  if(c.picking)sum=`<b>${rpTxt(c.s)}</b> → scegli la data di fine`;
+  else if(c.s&&c.e)sum=`<b>${rpTxt(c.s)}</b> → <b>${rpTxt(c.e)}</b>`;
+  c.pop.innerHTML=`<div class="rp-pre"><button class="${!c.s&&!c.e?'on':''}" onclick="rpPreset('','')">Tutte le date</button>${pres}</div><div class="rp-main"><div class="rp-cals">${cals.join('')}</div><div class="rp-foot"><div class="rp-sum">${sum}</div><button class="rp-btn gh" onclick="rpClose()">Annulla</button><button class="rp-btn pr" onclick="rpApply()" ${c.picking?'disabled':''}>Applica</button></div></div>`;
+}
+function rpNav(d){const c=RP._;c.view=new Date(c.view.getFullYear(),c.view.getMonth()+d,1);rpRender();}
+function rpHover(iso){const c=RP._;if(!c||!c.picking||c.hov===iso)return;c.hov=iso;rpRender();}
+function rpPick(iso){
+  const c=RP._;
+  if(!c.picking){c.s=iso;c.e='';c.hov=iso;c.picking=true;rpRender();return;}
+  if(iso<c.s){c.e=c.s;c.s=iso;}else c.e=iso;
+  c.picking=false;c.hov=null;rpRender();
+}
+function rpPreset(a,b){const c=RP._;const id=c.id;rpClose();rpSet(id,a,b);}
+function rpApply(){const c=RP._;if(c.picking)return;const id=c.id,s=c.s,e=c.e;rpClose();rpSet(id,s,e);}
+window.addEventListener('resize',()=>{if(RP._)rpClose();});
 
 function toast(msg,type){
   let box=document.getElementById('toasts');
@@ -1676,6 +1830,7 @@ function syncData(){
 }
 
 window.onload=function(){
+  rpInit('rp-conti','ds','de',renderConti);rpInit('rp-exp','exp-dal','exp-al',updExpSummary,'Tutto il periodo');
   // Skip login screen only if already authed in this session
   document.getElementById('login-user').value='';
   try{const x=localStorage.getItem('bdc_excl_int');if(x!==null)document.getElementById('x-int').checked=x==='1';}catch(e){}
@@ -2533,7 +2688,7 @@ function updExpSummary(){
   document.getElementById('exp-count').innerText=f.length.toLocaleString('it-IT');
   document.getElementById('exp-total').innerText=fmt(total);
 }
-function resetFilters(){document.getElementById('sq').value='';document.getElementById('acc-f').value='all';document.getElementById('ds').value='';document.getElementById('de').value='';EF={m:[],ok:[]};['efi-m','efi-ok'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.color='';el.innerText='filter_alt';}});renderConti();updTags();}
+function resetFilters(){document.getElementById('sq').value='';document.getElementById('acc-f').value='all';document.getElementById('ds').value='';document.getElementById('de').value='';rpSync('rp-conti');EF={m:[],ok:[]};['efi-m','efi-ok'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.color='';el.innerText='filter_alt';}});renderConti();updTags();}
 
 /* ---------- Export Excel (.xlsx vero, con numeri e date veri) ---------- */
 const XL_EUR='#,##0.00';
