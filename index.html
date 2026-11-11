@@ -237,7 +237,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 @keyframes ldF{to{width:100%}}
 .ld-txt{font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--ink4)}
 
-#app{display:flex;height:100vh;overflow:hidden}
+#app{display:flex;height:100vh;height:100dvh;overflow:hidden}
 
 /* ==================== SIDEBAR ==================== */
 #sidebar{width:var(--sb-w);flex-shrink:0;background:var(--sb);display:flex;flex-direction:column;z-index:100;border-right:1px solid var(--sb-border)}
@@ -583,7 +583,18 @@ input[type=checkbox]{accent-color:var(--brand);cursor:pointer;width:16px;height:
   .bn-item .material-symbols-rounded{font-size:24px;line-height:1;padding:3px 18px;border-radius:999px;transition:background .15s}
   .bn-item.active{color:var(--brand)}
   .bn-item.active .material-symbols-rounded{background:var(--brand-lt)}
-  .vscroll{padding-bottom:calc(96px + env(safe-area-inset-bottom))!important}
+  .vscroll{padding-bottom:calc(110px + env(safe-area-inset-bottom))!important}
+  /* v55: su cellulare niente Impostazioni */
+  #sidebar .sb-foot{display:none!important}
+  /* v55: Movimenti scorre tutto insieme (filtri compresi), così la lista usa tutto lo schermo */
+  #view-conti.active{display:block!important;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  #view-conti > div:first-child{padding:12px 12px 0!important}
+  #view-conti > div:first-child > div:first-child{margin-bottom:10px!important}
+  #mx{max-height:72vh;max-height:72dvh;overflow:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  #mx-floater{display:none!important}
+  #conti-wrap{overflow:visible!important;flex:none!important;padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+  .fbar .drange,.fbar .rp-trig{flex:1 1 calc(50% - 4px)!important}
+  .fbar .inp,.fbar select{flex:1 1 calc(50% - 4px)!important}
 }
 
 .rcount{white-space:nowrap;font-size:12px;color:var(--ink4);font-weight:500;background:var(--surf2);padding:4px 12px;border-radius:20px;border:1px solid var(--bd)}
@@ -1210,7 +1221,7 @@ tbody tr:hover td{background:#f8fafc!important}
     </form>
     <div class="login-foot">
       <span translate="no" class="material-symbols-rounded notranslate">verified_user</span>
-      <span>Connessione sicura · v54</span>
+      <span>Connessione sicura · v55</span>
     </div>
   </div>
 </div>
@@ -1355,7 +1366,6 @@ tbody tr:hover td{background:#f8fafc!important}
 <nav id="bnav" aria-label="Navigazione">
   <button class="bn-item active" data-v="cashflow" onclick="goView('cashflow')"><span translate="no" class="material-symbols-rounded notranslate">area_chart</span>Cashflow</button>
   <button class="bn-item" data-v="conti" onclick="goView('conti')"><span translate="no" class="material-symbols-rounded notranslate">receipt_long</span>Movimenti</button>
-  <button class="bn-item" data-v="sett" onclick="openSett()"><span translate="no" class="material-symbols-rounded notranslate">settings</span>Impostazioni</button>
 </nav>
   <div id="sidebar">
     <div class="sb-head">
@@ -2320,7 +2330,9 @@ function setupMxSticky(){
   
   function update(){
     const thead=mx.querySelector('thead');
-    if(!thead){fl.style.display='none';return;}
+    // v55: su cellulare niente intestazione "fluttuante" (si muoveva in disordine):
+    // la matrice ha il suo riquadro con intestazione e prima colonna fisse (CSS sticky)
+    if(!thead||window.innerWidth<=768){fl.style.display='none';mx.classList.remove('fl-on');return;}
     const cardRect=card.getBoundingClientRect();
     const mxRect=mx.getBoundingClientRect();
     const theadH=thead.offsetHeight||50;
