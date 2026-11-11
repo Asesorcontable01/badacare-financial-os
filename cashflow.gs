@@ -18,6 +18,7 @@
  */
 
 const SHARED_SECRET = "Badacare2026!";
+const REQUIRE_SECRET = false; // v51: accesso diretto senza password
 
 /* ==================== ROUTER ==================== */
 function doGet(e) {
@@ -36,7 +37,8 @@ function doPost(e) {
     }
     const body = JSON.parse(e.postData.contents);
 
-    if (body.secret !== SHARED_SECRET) {
+    // v51: l'app si apre senza login. Rimetti true per tornare a chiedere la password.
+    if (REQUIRE_SECRET && body.secret !== SHARED_SECRET) {
       return jsonOut({ error: "Unauthorized" });
     }
 

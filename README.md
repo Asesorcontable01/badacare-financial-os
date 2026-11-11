@@ -45,12 +45,12 @@ Il vantaggio rispetto al deployment "puro Apps Script" è che gli utenti non ved
 6. Aspetta 1-2 minuti. La tua app sarà su:
    `https://TUO_USERNAME.github.io/badacare-financial-os/`
 
-### 3. Login
+### 3. Accesso (v51: senza login)
 
-- Utente: `BADACARE`
-- Password: la stessa di `SHARED_SECRET` in `cashflow.gs` (non è scritta nel frontend).
-
-Dalla v45 la password non è più nel codice pubblico: al login viene inviata al backend, che la confronta con `SHARED_SECRET`. Se è corretta la sessione resta aperta finché non si chiude la scheda (sessionStorage).
+Dalla v51 l'app si apre direttamente, senza utente e password: `REQUIRE_SECRET = false` in `cashflow.gs`.
+**Attenzione:** chiunque abbia il link può vedere e modificare i dati. Per tornare a chiedere la password
+metti `REQUIRE_SECRET = true` in Apps Script e pubblica una nuova versione del deploy: l'app la chiederà
+una sola volta per dispositivo.
 
 ## Come cambiare la password
 
