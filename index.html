@@ -1156,29 +1156,23 @@ tbody tr:hover td{background:#f8fafc!important}
 <body>
 
 <!-- ==================== LOGIN SCREEN ==================== -->
-<div id="login-screen">
+<div id="login-screen" class="hide">
   <div class="login-grid"></div>
   <div class="login-box">
     <div class="login-brand">
       <div class="login-logo">B</div>
       <div style="text-align:center">
         <div class="login-title">Badacare Financial OS</div>
-        <div class="login-sub" style="margin-top:4px">Accesso Riservato</div>
+        <div class="login-sub" style="margin-top:4px">Il server chiede ancora la password</div>
+        <div class="login-sub" style="margin-top:8px;font-size:12px;opacity:.8">Inseriscila una sola volta: resterà salvata su questo dispositivo.</div>
       </div>
     </div>
     <form class="login-form" onsubmit="event.preventDefault();doLogin()">
       <div class="login-field">
-        <label class="login-label">Utente</label>
-        <div class="login-input-wrap">
-          <span translate="no" class="material-symbols-rounded notranslate">person</span>
-          <input type="text" id="login-user" class="login-input" autocomplete="off" spellcheck="false" style="text-transform:uppercase;letter-spacing:.04em" oninput="this.value=this.value.toUpperCase()" autofocus>
-        </div>
-      </div>
-      <div class="login-field">
         <label class="login-label">Password</label>
         <div class="login-input-wrap">
           <span translate="no" class="material-symbols-rounded notranslate">lock</span>
-          <input type="password" id="login-pass" class="login-input" autocomplete="current-password">
+          <input type="password" id="login-pass" class="login-input" autocomplete="current-password" autofocus>
           <button type="button" class="login-toggle" onclick="togglePass()" tabindex="-1">
             <span id="pass-icon" translate="no" class="material-symbols-rounded notranslate">visibility</span>
           </button>
@@ -1195,7 +1189,7 @@ tbody tr:hover td{background:#f8fafc!important}
     </form>
     <div class="login-foot">
       <span translate="no" class="material-symbols-rounded notranslate">verified_user</span>
-      <span>Connessione sicura · v50</span>
+      <span>Connessione sicura · v51</span>
     </div>
   </div>
 </div>
@@ -1278,25 +1272,6 @@ tbody tr:hover td{background:#f8fafc!important}
   </div>
 </div>
 
-<!-- ==================== LOGOUT CONFIRM ==================== -->
-<div class="mo" id="mo-logout" onclick="if(event.target===this)closeModal('mo-logout')">
-  <div class="modal" style="width:380px">
-    <div class="mhd">
-      <div><div class="mttl">Conferma uscita</div><div class="msub">Vuoi davvero uscire dal sistema?</div></div>
-    </div>
-    <div class="mbdy" style="text-align:center;padding:24px">
-      <div style="width:56px;height:56px;border-radius:50%;background:var(--neg-lt);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
-        <span translate="no" class="material-symbols-rounded notranslate" style="font-size:28px;color:var(--neg-text)">logout</span>
-      </div>
-      <p style="font-size:13px;color:var(--ink3)">Le modifiche non salvate andranno perse.</p>
-    </div>
-    <div class="mft">
-      <button onclick="closeModal('mo-logout')" class="btn btn-ghost btn-sm">Annulla</button>
-      <button onclick="doLogout()" class="btn btn-danger btn-sm"><span translate="no" class="material-symbols-rounded notranslate">logout</span>Esci</button>
-    </div>
-  </div>
-</div>
-
 <!-- ==================== PIE EXPAND MODAL ==================== -->
 <div class="mo" id="mo-pie" onclick="if(event.target===this)closePieModal()">
   <div class="modal" style="width:920px;max-width:95vw">
@@ -1368,7 +1343,6 @@ tbody tr:hover td{background:#f8fafc!important}
     </nav>
     <div class="sb-foot">
       <div class="nav-link" onclick="openSett()"><span translate="no" class="material-symbols-rounded notranslate">settings</span>Impostazioni</div>
-      <div class="nav-link sb-logout" onclick="askLogout()"><span translate="no" class="material-symbols-rounded notranslate">logout</span>Esci</div>
     </div>
   </div>
   <div class="sb-backdrop" id="sb-backdrop" onclick="closeSidebar()"></div>
@@ -1539,13 +1513,17 @@ tbody tr:hover td{background:#f8fafc!important}
 /* ==================== API CONFIG (GitHub Pages bridge) ==================== */
 /**
  * API_URL = URL del deployment Apps Script (/exec).
- * La chiave API NON è più scritta nel codice: è la password inserita al login,
- * verificata dal backend (SHARED_SECRET in cashflow.gs) e tenuta solo in sessionStorage.
+ * v51: niente più schermata di login, l'app si apre direttamente.
+ * Il backend (cashflow.gs, REQUIRE_SECRET=false) non chiede più la password.
+ * Se il backend chiede ancora la password (versione vecchia di cashflow.gs),
+ * l'app la chiede una sola volta e la salva in localStorage su questo dispositivo.
  */
 const API_URL = "https://script.google.com/macros/s/AKfycbwJDeDHLOT3BY7k-D_HrEOL7tu4iJ854ByxKQqXdjlcnxUUXs3Z-pgoEjmPbebMhfj_EA/exec";
-const KEY_STORE='bdc_key_v2';
-function getKey(){try{return sessionStorage.getItem(KEY_STORE)||'';}catch(e){return '';}}
-function setKey(k){try{k?sessionStorage.setItem(KEY_STORE,k):sessionStorage.removeItem(KEY_STORE);}catch(e){}}
+const KEY_STORE='bdc_key_v3';
+function getKey(){
+  try{return localStorage.getItem(KEY_STORE)||sessionStorage.getItem('bdc_key_v2')||'';}catch(e){return '';}
+}
+function setKey(k){try{k?localStorage.setItem(KEY_STORE,k):localStorage.removeItem(KEY_STORE);}catch(e){}}
 
 function api(fn, args, key){
   if(!Array.isArray(args)) args = (args===undefined ? [] : [args]);
@@ -1557,16 +1535,13 @@ function api(fn, args, key){
     if(!r.ok) throw new Error('HTTP '+r.status);
     return r.json();
   }).then(data=>{
-    if(data && data.error==='Unauthorized' && !key){ sessionExpired(); }
+    if(data && data.error==='Unauthorized' && !key){ askPassword(); }
     if(data && data.error) throw new Error(data.error);
     return data;
   });
 }
 
-/* ==================== AUTH ==================== */
-const VALID_USER='BADACARE';
-
-function isAuthed(){ return !!getKey(); }
+/* ==================== ACCESSO DIRETTO (senza login) ==================== */
 function togglePass(){
   const i=document.getElementById('login-pass'),ic=document.getElementById('pass-icon');
   if(i.type==='password'){i.type='text';ic.innerText='visibility_off';}
@@ -1584,11 +1559,9 @@ function resetLoginBtn(){
   btn.innerHTML='<span>Accedi</span><span translate="no" class="material-symbols-rounded notranslate">arrow_forward</span>';
 }
 function doLogin(){
-  const u=document.getElementById('login-user').value.trim().toUpperCase();
   const p=document.getElementById('login-pass').value;
   const btn=document.getElementById('login-btn');
-  if(!u||!p){loginErr('Inserisci utente e password');return;}
-  if(u!==VALID_USER){loginErr('Utente o password non corretti');return;}
+  if(!p){loginErr('Inserisci la password');return;}
   document.getElementById('login-err').style.display='none';
   btn.disabled=true;
   btn.innerHTML='<span translate="no" class="material-symbols-rounded spin notranslate">progress_activity</span><span>Verifica in corso...</span>';
@@ -1604,7 +1577,7 @@ function doLogin(){
     resetLoginBtn();
     const msg=String(e.message||e);
     if(msg==='Unauthorized'){
-      loginErr('Utente o password non corretti');
+      loginErr('Password non corretta');
       document.getElementById('login-pass').value='';
       document.getElementById('login-pass').focus();
     }else{
@@ -1612,31 +1585,17 @@ function doLogin(){
     }
   });
 }
-function sessionExpired(){
-  if(!isAuthed())return;
+// Solo se il backend chiede ancora la password: la si chiede una volta e resta salvata.
+function askPassword(){
   setKey('');
-  doLogout();
-  loginErr('Sessione scaduta o password cambiata. Accedi di nuovo.');
-}
-function askLogout(){
-  document.getElementById('mo-logout').style.display='flex';
-  setTimeout(()=>document.getElementById('mo-logout').classList.add('active'),10);
-}
-function doLogout(){
-  setKey('');
-  closeModal('mo-logout');
-  // Reset state
-  DB=[];CATS=[];
+  hideL();
   document.getElementById('app').style.display='none';
   document.getElementById('login-screen').classList.remove('hide');
-  document.getElementById('login-user').value='';
   document.getElementById('login-pass').value='';
-  document.getElementById('login-err').style.display='none';
-  const btn=document.getElementById('login-btn');
-  btn.disabled=false;
-  btn.innerHTML='<span>Accedi</span><span translate="no" class="material-symbols-rounded notranslate">arrow_forward</span>';
-  document.getElementById('login-user').focus();
+  resetLoginBtn();
+  setTimeout(()=>document.getElementById('login-pass').focus(),50);
 }
+
 
 /* ==================== APP STATE ==================== */
 let DB=[],CATS=[],COPTS=[],SALDI=[];
@@ -1814,7 +1773,6 @@ function showL(m='Caricamento...'){const l=document.getElementById('loader');doc
 function hideL(){document.getElementById('loader').classList.add('hide');setTimeout(()=>document.getElementById('loader').style.display='none',600);}
 
 function bootApp(){
-  if(!isAuthed())return;
   syncData();
 }
 
@@ -1831,14 +1789,10 @@ function syncData(){
 
 window.onload=function(){
   rpInit('rp-conti','ds','de',renderConti);rpInit('rp-exp','exp-dal','exp-al',updExpSummary,'Tutto il periodo');
-  // Skip login screen only if already authed in this session
-  document.getElementById('login-user').value='';
   try{const x=localStorage.getItem('bdc_excl_int');if(x!==null)document.getElementById('x-int').checked=x==='1';}catch(e){}
-  if(isAuthed()){
-    document.getElementById('login-screen').classList.add('hide');
-    document.getElementById('app').style.display='flex';
-    bootApp();
-  }
+  // v51: accesso diretto, nessuna schermata di login
+  document.getElementById('app').style.display='flex';
+  bootApp();
 };
 
 function initSel(d){
