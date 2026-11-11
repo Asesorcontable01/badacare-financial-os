@@ -590,6 +590,8 @@ input[type=checkbox]{accent-color:var(--brand);cursor:pointer;width:16px;height:
   #view-conti.active{display:block!important;overflow-y:auto;-webkit-overflow-scrolling:touch}
   #view-conti > div:first-child{padding:12px 12px 0!important}
   #view-conti > div:first-child > div:first-child{margin-bottom:10px!important}
+  #mx{max-height:72vh;max-height:72dvh;overflow:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  #mx-floater{display:none!important}
   #conti-wrap{overflow:visible!important;flex:none!important;padding-bottom:calc(90px + env(safe-area-inset-bottom))}
   .fbar .drange,.fbar .rp-trig{flex:1 1 calc(50% - 4px)!important}
   .fbar .inp,.fbar select{flex:1 1 calc(50% - 4px)!important}
@@ -2328,7 +2330,9 @@ function setupMxSticky(){
   
   function update(){
     const thead=mx.querySelector('thead');
-    if(!thead){fl.style.display='none';return;}
+    // v55: su cellulare niente intestazione "fluttuante" (si muoveva in disordine):
+    // la matrice ha il suo riquadro con intestazione e prima colonna fisse (CSS sticky)
+    if(!thead||window.innerWidth<=768){fl.style.display='none';mx.classList.remove('fl-on');return;}
     const cardRect=card.getBoundingClientRect();
     const mxRect=mx.getBoundingClientRect();
     const theadH=thead.offsetHeight||50;
