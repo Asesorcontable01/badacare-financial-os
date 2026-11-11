@@ -572,7 +572,19 @@ input[type=checkbox]{accent-color:var(--brand);cursor:pointer;width:16px;height:
 .row-sub .doc{display:inline-flex;align-items:center;gap:3px;text-transform:none;letter-spacing:0;color:var(--brand-d)}
 .row-sub .doc .material-symbols-rounded{font-size:13px}
 .more-row td{text-align:center!important;padding:14px!important}
-@media (max-width:768px){.hide-m{display:none}#toasts{left:12px;right:12px;bottom:12px}.toast{max-width:none}}
+@media (max-width:768px){.hide-m{display:none}#toasts{left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom))}.toast{max-width:none}}
+/* v54: barra di navigazione in basso (solo cellulare) */
+#bnav{display:none}
+@media (max-width:768px){
+  #bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:90;background:var(--surf,#fff);border-top:1px solid var(--bd);
+    padding:6px 8px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(15,23,42,.06)}
+  .bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 4px;border:0;background:none;
+    border-radius:12px;font:inherit;font-size:11.5px;font-weight:600;color:var(--ink4,#64748b);cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .bn-item .material-symbols-rounded{font-size:24px;line-height:1;padding:3px 18px;border-radius:999px;transition:background .15s}
+  .bn-item.active{color:var(--brand)}
+  .bn-item.active .material-symbols-rounded{background:var(--brand-lt)}
+  .vscroll{padding-bottom:calc(96px + env(safe-area-inset-bottom))!important}
+}
 
 .rcount{white-space:nowrap;font-size:12px;color:var(--ink4);font-weight:500;background:var(--surf2);padding:4px 12px;border-radius:20px;border:1px solid var(--bd)}
 
@@ -1198,7 +1210,7 @@ tbody tr:hover td{background:#f8fafc!important}
     </form>
     <div class="login-foot">
       <span translate="no" class="material-symbols-rounded notranslate">verified_user</span>
-      <span>Connessione sicura · v53</span>
+      <span>Connessione sicura · v54</span>
     </div>
   </div>
 </div>
@@ -1340,6 +1352,11 @@ tbody tr:hover td{background:#f8fafc!important}
 
 <!-- ==================== APP ==================== -->
 <div id="app" style="display:none">
+<nav id="bnav" aria-label="Navigazione">
+  <button class="bn-item active" data-v="cashflow" onclick="goView('cashflow')"><span translate="no" class="material-symbols-rounded notranslate">area_chart</span>Cashflow</button>
+  <button class="bn-item" data-v="conti" onclick="goView('conti')"><span translate="no" class="material-symbols-rounded notranslate">receipt_long</span>Movimenti</button>
+  <button class="bn-item" data-v="sett" onclick="openSett()"><span translate="no" class="material-symbols-rounded notranslate">settings</span>Impostazioni</button>
+</nav>
   <div id="sidebar">
     <div class="sb-head">
       <div class="sb-logo">B</div>
@@ -1947,7 +1964,8 @@ function renderContoMesi(){
   upd.innerHTML='<span class="cm-upd-l"><span translate="no" class="material-symbols-rounded notranslate">update</span>Dati caricati fino a:</span>'+
     accs.map(a=>`<span class="cm-chip" title="Ultimo movimento: ${last[a]?fd(last[a]):'—'}">${esc(accLbl(a))} <b>${fino(last[a])}</b></span>`).join('');
 }
-function goConti(){const n=document.querySelectorAll('.nav-link')[1];if(n)switchView('conti',n);}
+function goConti(){goView('conti');}
+function goView(v){const n=document.querySelectorAll('.sb-nav .nav-link')[v==='conti'?1:0]||document.querySelectorAll('.nav-link')[v==='conti'?1:0];if(n)switchView(v,n);}
 function perOptions(months,years){
   return `<option value="all">Tutti i periodi</option><optgroup label="Anno">${years.map(y=>`<option value="Y${y}">Anno ${y}</option>`).join('')}</optgroup><optgroup label="Mese">${[...months].reverse().map(x=>`<option value="${x}">${pLong(x)}</option>`).join('')}</optgroup>`;
 }
@@ -1958,7 +1976,9 @@ function switchView(v,el){
   document.querySelectorAll('.view').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');el.classList.add('active');
-  const ico={cashflow:'area_chart',conti:'receipt_long'},lbl={cashflow:'Cash Flow',conti:'Transazioni'};
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.toggle('active',b.dataset.v===v));
+  const vs=document.querySelector('#view-'+v+' .vscroll')||document.getElementById('view-'+v);if(vs&&vs.scrollTo)vs.scrollTo(0,0);
+  const ico={cashflow:'area_chart',conti:'receipt_long'},lbl={cashflow:'Cash Flow',conti:'Movimenti'};
   document.getElementById('pg-title').innerHTML=`<span translate="no" class="material-symbols-rounded notranslate">${ico[v]}</span>${lbl[v]}`;
   document.getElementById('tr-cf').style.display=v==='cashflow'?'flex':'none';
   document.getElementById('tr-kt').style.display=v==='conti'?'flex':'none';
