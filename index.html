@@ -590,10 +590,16 @@ input[type=checkbox]{accent-color:var(--brand);cursor:pointer;width:16px;height:
   #view-conti.active{display:block!important;overflow-y:auto;-webkit-overflow-scrolling:touch}
   #view-conti > div:first-child{padding:12px 12px 0!important}
   #view-conti > div:first-child > div:first-child{margin-bottom:10px!important}
-  #mx{max-height:72vh;max-height:72dvh;overflow:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  #mx{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch}
   #mx-floater{display:none!important}
   #conti-wrap{overflow:visible!important;flex:none!important;padding-bottom:calc(90px + env(safe-area-inset-bottom))}
   .fbar .drange,.fbar .rp-trig{flex:1 1 calc(50% - 4px)!important}
+  /* v56: la barra di ricerca resta fissa in alto mentre la lista scorre */
+  #view-conti > div:first-child{position:sticky;top:var(--ch-top,0px);z-index:40}
+  #view-conti .fbar{margin-bottom:10px!important}
+  #view-conti .fbar .sbox{order:9}
+  #conti-wrap thead th{top:var(--ch-stuck,0px)!important}
+  #conti-wrap .day-row td{top:calc(var(--ch-stuck,0px) + 39px)!important}
   .fbar .inp,.fbar select{flex:1 1 calc(50% - 4px)!important}
 }
 
@@ -1221,7 +1227,7 @@ tbody tr:hover td{background:#f8fafc!important}
     </form>
     <div class="login-foot">
       <span translate="no" class="material-symbols-rounded notranslate">verified_user</span>
-      <span>Connessione sicura · v55</span>
+      <span>Connessione sicura · v56</span>
     </div>
   </div>
 </div>
@@ -1975,6 +1981,15 @@ function renderContoMesi(){
     accs.map(a=>`<span class="cm-chip" title="Ultimo movimento: ${last[a]?fd(last[a]):'—'}">${esc(accLbl(a))} <b>${fino(last[a])}</b></span>`).join('');
 }
 function goConti(){goView('conti');}
+/* v56 cellulare: calcola quanto dell'intestazione di Movimenti resta fisso (solo la ricerca) */
+function fixContiHdr(){
+  const v=document.getElementById('view-conti'),h=v&&v.firstElementChild,sb=h&&h.querySelector('.sbox');if(!sb)return;
+  if(window.innerWidth>768){v.style.removeProperty('--ch-top');v.style.removeProperty('--ch-stuck');return;}
+  const hr=h.getBoundingClientRect(),stuck=Math.round(hr.bottom-sb.getBoundingClientRect().top+8);
+  if(!hr.height)return;
+  v.style.setProperty('--ch-top',(-(Math.round(hr.height)-stuck))+'px');v.style.setProperty('--ch-stuck',stuck+'px');
+}
+window.addEventListener('resize',()=>requestAnimationFrame(fixContiHdr));
 function goView(v){const n=document.querySelectorAll('.sb-nav .nav-link')[v==='conti'?1:0]||document.querySelectorAll('.nav-link')[v==='conti'?1:0];if(n)switchView(v,n);}
 function perOptions(months,years){
   return `<option value="all">Tutti i periodi</option><optgroup label="Anno">${years.map(y=>`<option value="Y${y}">Anno ${y}</option>`).join('')}</optgroup><optgroup label="Mese">${[...months].reverse().map(x=>`<option value="${x}">${pLong(x)}</option>`).join('')}</optgroup>`;
@@ -1987,6 +2002,7 @@ function switchView(v,el){
   document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');el.classList.add('active');
   document.querySelectorAll('.bn-item').forEach(b=>b.classList.toggle('active',b.dataset.v===v));
+  if(v==='conti')requestAnimationFrame(fixContiHdr);
   const vs=document.querySelector('#view-'+v+' .vscroll')||document.getElementById('view-'+v);if(vs&&vs.scrollTo)vs.scrollTo(0,0);
   const ico={cashflow:'area_chart',conti:'receipt_long'},lbl={cashflow:'Cash Flow',conti:'Movimenti'};
   document.getElementById('pg-title').innerHTML=`<span translate="no" class="material-symbols-rounded notranslate">${ico[v]}</span>${lbl[v]}`;
@@ -2540,6 +2556,7 @@ const GIORNI=['domenica','lunedì','martedì','mercoledì','giovedì','venerdì'
 function dayLabel(r){const p=String(r.dt).split('/');if(p.length!==3)return r.dt;const d=new Date(+p[2],+p[1]-1,+p[0]);const g=GIORNI[d.getDay()];return`${g[0].toUpperCase()+g.slice(1)} ${d.getDate()} ${MESI[d.getMonth()]} ${d.getFullYear()}`;}
 function renderConti(keepLimit){
   if(!keepLimit)ROW_LIMIT=500;
+  requestAnimationFrame(fixContiHdr);
   const f=contiFiltered();
   const shown=Math.min(f.length,ROW_LIMIT);
   document.getElementById('rcount').innerText=f.length>shown
