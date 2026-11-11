@@ -1227,7 +1227,7 @@ tbody tr:hover td{background:#f8fafc!important}
     </form>
     <div class="login-foot">
       <span translate="no" class="material-symbols-rounded notranslate">verified_user</span>
-      <span>Connessione sicura · v56</span>
+      <span>Connessione sicura · v57</span>
     </div>
   </div>
 </div>
@@ -2302,6 +2302,12 @@ function renderMatrix(mx, months){
   w.innerHTML=h;
   // Re-init floating sticky header (DOM was rebuilt)
   setupMxSticky();
+  // v57 cellulare: la matrice si apre centrata sull'ultimo mese caricato
+  if(window.innerWidth<=768)requestAnimationFrame(()=>{
+    const ths=w.querySelectorAll('thead th'),last=ths[months.length],first=ths[0];if(!last||!first)return;
+    const fw=first.offsetWidth,vis=w.clientWidth-fw;
+    w.scrollLeft=Math.max(0,last.offsetLeft-fw-(vis-last.offsetWidth)/2);
+  });
 }
 
 function toggleSection(t){
