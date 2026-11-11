@@ -726,8 +726,6 @@ input[type="password"]::-webkit-contacts-auto-fill-button{display:none!important
   /* Pannelli chiusi: niente ombra che si vede ai bordi dello schermo */
   #sidebar:not(.open){box-shadow:none!important}
   #panel:not(.open){box-shadow:none!important;border-left:0!important}
-  /* Card "Entrate e uscite per conto": selettore a tutta larghezza */
-  #cm-acc{min-width:0!important;width:100%}
   
   /* Bigger touch targets for buttons */
   .btn-sm{min-height:34px}
@@ -1099,7 +1097,7 @@ tbody tr:hover td{background:#f8fafc!important}
 .cm-upd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0 0 12px;font-size:12px;color:var(--ink4)}
 .cm-upd-l{display:inline-flex;align-items:center;gap:4px;font-weight:600;color:var(--ink3)}
 .cm-upd-l .material-symbols-rounded{font-size:16px}
-.cm-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--surf2,#f1f5f9);border:1px solid var(--bd);cursor:pointer;white-space:nowrap}
+.cm-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--surf2,#f1f5f9);border:1px solid var(--bd);white-space:nowrap}
 .cm-chip b{color:var(--ink2);font-weight:600}
 .cm-chip.on{background:var(--brand-lt);border-color:var(--brand-md);color:var(--brand-d)}
 .cm-chip.on b{color:var(--brand-d)}
@@ -1200,7 +1198,7 @@ tbody tr:hover td{background:#f8fafc!important}
     </form>
     <div class="login-foot">
       <span translate="no" class="material-symbols-rounded notranslate">verified_user</span>
-      <span>Connessione sicura · v52</span>
+      <span>Connessione sicura · v53</span>
     </div>
   </div>
 </div>
@@ -1415,11 +1413,7 @@ tbody tr:hover td{background:#f8fafc!important}
             <div class="card-body"><div class="sb-grid" id="saldi"></div></div>
           </div>
 
-          <div class="card" id="cm-card" style="margin-bottom:20px">
-            <div class="card-hd"><div class="card-ttl"><span translate="no" class="material-symbols-rounded notranslate">calendar_month</span>Entrate e uscite per conto<span class="card-tag" id="cm-tag">Mensile</span></div>
-              <select id="cm-acc" class="inp" style="min-width:200px;max-width:100%" onchange="renderContoMesi()"></select></div>
-            <div class="card-body" style="padding-top:4px"><div class="cm-upd" id="cm-upd"></div><div class="cm-wrap" id="cm-tab"></div></div>
-          </div>
+          <div class="card" id="cm-card" style="margin-bottom:20px"><div class="card-body" style="padding:12px 18px"><div class="cm-upd" id="cm-upd" style="margin:0"></div></div></div>
 
           <div style="display:grid;grid-template-columns:3fr 2fr;gap:20px;margin-bottom:20px">
             <div class="card">
@@ -1942,35 +1936,16 @@ function renderSaldi(){
 }
 /* Entrate e uscite di un conto mese per mese, con il saldo a fine mese quando c'è un saldo iniziale */
 function renderContoMesi(){
-  const sel=document.getElementById('cm-acc'),box=document.getElementById('cm-tab');if(!sel||!box)return;
+  // Fin dove sono caricati i dati: ultimo movimento di ogni conto (su tutti i dati)
+  const upd=document.getElementById('cm-upd');if(!upd)return;
   const accs=[...new Set(DB.map(r=>r.acc))].sort((a,b)=>(SALDI.some(x=>x.acc===b)-SALDI.some(x=>x.acc===a))||a.localeCompare(b));
   const accLbl=a=>SALDI.some(x=>x.acc===a)?bankName(a)+((a.match(/(\d{3,})\s*$/)||[])[1]?' · *'+a.match(/(\d{3,})\s*$/)[1]:''):a;
-  const prev=sel.value;sel.innerHTML=accs.map(a=>`<option value="${esc(a)}">${esc(accLbl(a))}</option>`).join('');
-  sel.value=accs.includes(prev)?prev:(accs[0]||'');const acc=sel.value;if(!acc){box.innerHTML='';return;}
-  const per=document.getElementById('mFilter').value,yr=per==='all'?'':per[0]==='Y'?per.slice(1):per.slice(0,4);
-  const sl=SALDI.filter(x=>x.acc===acc&&dKey(x.data)).map(x=>({...x,k:dKey(x.data)})).sort((a,b)=>a.k.localeCompare(b.k));
-  const ini=sl.find(x=>/inizial|apertura/i.test(x.tipo))||(sl.length>1?sl[0]:null);
-  const by={};DB.filter(r=>r.acc===acc).forEach(r=>{const k=dKey(r.dt);if(!k)return;const p=k.slice(0,4)+'-'+k.slice(4,6);const o=by[p]=by[p]||{e:0,u:0,n:0,after:0};
-    if(r.t==='ENTRATE')o.e+=r.m;else o.u+=r.m;o.n++;if(ini&&k>ini.k)o.after+=r.t==='ENTRATE'?r.m:-r.m;});
-  const all=Object.keys(by).sort();let run=ini?ini.saldo:null;const bal={};
-  all.forEach(p=>{if(ini&&p.replace('-','')+'31'>ini.k){run+=by[p].after;bal[p]=run;}});
-  const ms=all.filter(p=>!yr||p.startsWith(yr));
-  // Fin dove sono caricati i dati: ultimo movimento di ogni conto (su tutti i dati, non solo il periodo scelto)
   const last={};DB.forEach(r=>{const k=dKey(r.dt);if(k&&(!last[r.acc]||k>last[r.acc]))last[r.acc]=k;});
   const fino=k=>k?MESI_L[+k.slice(4,6)-1].toLowerCase()+' '+k.slice(0,4):'—';
   const fd=k=>k.slice(6)+'/'+k.slice(4,6)+'/'+k.slice(0,4);
-  document.getElementById('cm-tag').textContent='Dati fino a '+fino(last[acc]);
-  const upd=document.getElementById('cm-upd');
-  if(upd)upd.innerHTML='<span class="cm-upd-l"><span translate="no" class="material-symbols-rounded notranslate">update</span>Dati caricati fino a:</span>'+
-    accs.map(a=>`<span class="cm-chip${a===acc?' on':''}" title="Ultimo movimento: ${last[a]?fd(last[a]):'—'}" onclick="document.getElementById('cm-acc').value=this.dataset.a;renderContoMesi()" data-a="${esc(a)}">${esc(accLbl(a))} <b>${fino(last[a])}</b></span>`).join('');
-  if(!ms.length){box.innerHTML='<div class="cm-empty">Nessun movimento nel periodo.</div>';return;}
-  const c=v=>v<0?' class="neg"':'',mob=window.innerWidth<=768,F=mob?fmt0:fmt,PL=p=>mob?MESI_S[+p.slice(5)-1]+' '+p.slice(2,4):pLong(p);let te=0,tu=0,tn=0;
-  const body=ms.map(p=>{const o=by[p];te+=o.e;tu+=o.u;tn+=o.n;const n=o.e-o.u;
-    return `<tr><td>${PL(p)}<span class="cm-n">${o.n} mov.</span></td><td class="pos">${F(o.e)}</td><td class="ng">${F(o.u)}</td><td${c(n)}>${(n>=0?'+':'')+F(n)}</td>${ini?`<td${c(bal[p]??0)}><b>${bal[p]!=null?F(bal[p]):'—'}</b></td>`:''}</tr>`;}).join('');
-  const tn2=te-tu;
-  box.innerHTML=`<table class="cm"><thead><tr><th>Mese</th><th>Entrate</th><th>Uscite</th><th>Netto</th>${ini?(mob?'<th>Saldo</th>':'<th>Saldo fine mese</th>'):''}</tr></thead><tbody>${body}</tbody>
-    <tfoot><tr><td>Totale<span class="cm-n">${tn.toLocaleString('it-IT')} mov.</span></td><td class="pos">${F(te)}</td><td class="ng">${F(tu)}</td><td${c(tn2)}>${(tn2>=0?'+':'')+F(tn2)}</td>${ini?'<td></td>':''}</tr></tfoot></table>`+
-    (ini?'':'<div class="cm-empty" style="padding-top:10px">Per vedere il saldo a fine mese aggiungi il saldo iniziale di questo conto nel foglio SALDI.</div>');
+  document.getElementById('cm-card').style.display=accs.length?'':'none';
+  upd.innerHTML='<span class="cm-upd-l"><span translate="no" class="material-symbols-rounded notranslate">update</span>Dati caricati fino a:</span>'+
+    accs.map(a=>`<span class="cm-chip" title="Ultimo movimento: ${last[a]?fd(last[a]):'—'}">${esc(accLbl(a))} <b>${fino(last[a])}</b></span>`).join('');
 }
 function goConti(){const n=document.querySelectorAll('.nav-link')[1];if(n)switchView('conti',n);}
 function perOptions(months,years){
